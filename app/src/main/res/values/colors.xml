@@ -2,4 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="dark_blue">#060638</color>
+
+    <color name="white_10">#1AFFFFFF</color>
+    <color name="white_50">#80FFFFFF</color>
+
+    <color name="bright_blue">#1F41F4</color>
+    <color name="dark_blue_alt">#060638</color>
+
+    <color name="success_green">#24B24C</color>
+    <color name="error_red">#B22424</color>
 </resources>

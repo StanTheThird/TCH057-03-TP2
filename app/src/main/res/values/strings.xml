@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">TCH057-03-TP2</string>
+    <string name="title_activity_connexion">Connexion</string>
+    <string name="title_activity_inscription">Inscription</string>
+    <string name="title_activity_accueil">Accueil</string>
+    <string name="title_activity_details">Details</string>
+    <string name="title_activity_historique">Historique</string>
+    <string name="voyage_voyage">Voyage Voyage</string>
 </resources>
