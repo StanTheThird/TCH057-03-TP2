@@ -12,7 +12,7 @@
         android:id="@+id/AppName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="cursive"
+        android:fontFamily="@font/oleoscriptswashcaps_regular"
         android:text="Voyage Voyage"
         android:textAlignment="center"
         android:textColor="@color/white"
@@ -58,7 +58,9 @@
                     android:id="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/abeezee_regular"
                     android:text="Bonjour"
+                    android:layout_marginBottom="@dimen/negative_padding"
                     android:textColor="@color/white_50"
                     android:textSize="14sp" />
 
@@ -66,7 +68,8 @@
                     android:id="@+id/textView3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Nom Utilisateur"
+                    android:fontFamily="@font/adlamdisplay_regular"
+                    android:text="Nom utilisateur"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
 
@@ -75,26 +78,27 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10sp"
                 android:layout_weight="1"
                 android:background="@drawable/white_rounded_frame_360"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="16dp">
+                android:padding="6dp">
 
                 <TextView
                     android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="@font/adlamdisplay_regular"
                     android:text="Réservations"
                     android:textColor="@color/white"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <LinearLayout
-                    android:layout_width="36sp"
-                    android:layout_height="36sp"
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
                     android:layout_weight="1"
+                    android:layout_margin="@dimen/normal_padding"
                     android:background="@drawable/blue_rounded_frame_360"
                     android:gravity="center"
                     android:orientation="vertical"
@@ -105,6 +109,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/adlamdisplay_regular"
                         android:text="2"
                         android:textColor="@color/white"
                         android:textSize="20sp" />
@@ -127,6 +132,7 @@
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/adlamdisplay_regular"
                 android:layout_weight="1"
                 android:text="Filtres"
                 android:textColor="@color/white"
