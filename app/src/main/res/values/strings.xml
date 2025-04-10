@@ -6,4 +6,9 @@
     <string name="title_activity_details">Details</string>
     <string name="title_activity_historique">Historique</string>
     <string name="voyage_voyage">Voyage Voyage</string>
+    <string name="description">Description</string>
+    <string name="prix">Prix</string>
+    <string name="voyage_vers">Voyage vers</string>
+    <string name="todo">TODO</string>
+    <string name="destination">Destination</string>
 </resources>
