@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = GenericAdapter(
             context = this,
-            layoutId = R.layout.voyage_item, // Specify the layout for list items
+            layoutId = R.layout.item_voyage, // Specify the layout for list items
             items = voyageData // Provide the data
         )
     }
