@@ -12,7 +12,8 @@ import com.bumptech.glide.Glide
 class GenericAdapter(
     private val context: Context,
     private val layoutId: Int, // Layout resource for list item
-    private val items: List<Map<String, Any>> // List of data maps for each list item
+    private val items: List<Map<String, Any>>, // List of data maps for each list item
+    private val onItemClick: (position: Int) -> Unit // Lambda for item click handling
 ) : RecyclerView.Adapter<GenericAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -25,7 +26,9 @@ class GenericAdapter(
 
         // Dynamically bind data to views
         for ((key, value) in dataMap) {
-            val view = holder.itemView.findViewById<View>(context.resources.getIdentifier(key, "id", context.packageName))
+            val view = holder.itemView.findViewById<View>(
+                context.resources.getIdentifier(key, "id", context.packageName)
+            )
 
             when (view) {
                 is TextView -> view.text = value.toString() // Set text for TextView
@@ -38,6 +41,11 @@ class GenericAdapter(
                         .into(view)
                 }
             }
+        }
+
+        // Set click listener
+        holder.itemView.setOnClickListener {
+            onItemClick(position)
         }
     }
 

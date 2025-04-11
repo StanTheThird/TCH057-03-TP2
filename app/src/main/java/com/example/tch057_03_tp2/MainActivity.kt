@@ -1,5 +1,6 @@
 package com.example.tch057_03_tp2
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,8 +32,15 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = GenericAdapter(
             context = this,
             layoutId = R.layout.item_voyage, // Specify the layout for list items
-            items = voyageData // Provide the data
+            items = voyageData,
+            onItemClick = { position ->
+                // Pass only the voyage ID to VoyageActivity
+                val selectedVoyage = voyages[position]
+                val intent = Intent(this, Voyage::class.java).apply {
+                    putExtra("voyageId", selectedVoyage.id) // Pass the ID
+                }
+                startActivity(intent)
+            }
         )
     }
-
 }
