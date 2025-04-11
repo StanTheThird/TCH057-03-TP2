@@ -9,7 +9,7 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/appNameText"
+        android:id="@+id/app_name_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/oleoscriptswashcaps_regular"
@@ -22,6 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -32,7 +33,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline2">
 
         <TextView
-            android:id="@+id/salutationText"
+            android:id="@+id/salutation_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/negative_padding"
@@ -43,7 +44,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/titrePageText"
+            android:id="@+id/titre_page_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/adlamdisplay_regular"
@@ -56,13 +57,60 @@
             android:id="@+id/informationText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/abeezee_regular"
             android:layout_marginTop="@dimen/negative_padding"
+            android:fontFamily="@font/abeezee_regular"
             android:text="Remplissez les informations suivantes"
             android:textAlignment="center"
             android:textColor="@color/white_50"
             android:textSize="14sp" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_rounded_frame_24_10">
+
+            <EditText
+                android:id="@+id/email_imput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:fontFamily="@font/adlamdisplay_regular"
+                android:inputType="textEmailAddress"
+                android:hint="Courriel"
+                android:padding="@dimen/large_padding"
+                android:Color="@color/white"
+                android:textColorHint="@color/white"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_padding"
+            android:background="@drawable/white_rounded_frame_10_24">
+            <EditText
+                android:id="@+id/password_imput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:fontFamily="@font/adlamdisplay_regular"
+                android:inputType="textPassword"
+                android:padding="@dimen/large_padding"
+                android:hint="Mot de Passe"
+                android:Color="@color/white"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white" />
+        </FrameLayout>
     </LinearLayout>
 
     <LinearLayout
