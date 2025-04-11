@@ -21,23 +21,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/white_rounded_frame_10"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
         android:padding="@dimen/normal_padding"
-        android:weightSum="2"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/guideline2">
 
+        <!-- Left Section (Bonjour + Nom utilisateur) -->
         <LinearLayout
+            android:id="@+id/left_section"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView
                 android:id="@+id/salutation_text"
@@ -57,23 +58,25 @@
                 android:text="Nom utilisateur"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
-
         </LinearLayout>
 
+        <!-- Right Section (Réservations + Counter) -->
         <LinearLayout
+            android:id="@+id/right_section"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="@drawable/white_rounded_frame_360"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="6dp">
+            android:padding="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView
                 android:id="@+id/reservation_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:fontFamily="@font/adlamdisplay_regular"
                 android:text="Réservations"
                 android:textColor="@color/white"
@@ -83,7 +86,6 @@
                 android:layout_width="30sp"
                 android:layout_height="30sp"
                 android:layout_margin="@dimen/normal_padding"
-                android:layout_weight="1"
                 android:background="@drawable/blue_rounded_frame_360"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -93,15 +95,14 @@
                     android:id="@+id/nb_reservation_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:fontFamily="@font/adlamdisplay_regular"
                     android:text="2"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
             </LinearLayout>
-
         </LinearLayout>
-    </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
