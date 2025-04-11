@@ -2,6 +2,7 @@ package com.example.tch057_03_tp2
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +25,16 @@ class MainActivity : AppCompatActivity() {
                 "prixText" to voyage.price,
                 "description" to voyage.description
             )
+        }
+
+        // Find the LinearLayout you want to make clickable
+        val reservationBtn = findViewById<LinearLayout>(R.id.reservation_btn)
+
+        // Set click listener
+        reservationBtn.setOnClickListener {
+            // Create an Intent to start the HistoriqueActivity
+            val intent = Intent(this, Historique::class.java)
+            startActivity(intent)
         }
 
         // Set up RecyclerView with GenericAdapter

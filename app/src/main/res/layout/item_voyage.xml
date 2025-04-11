@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/adlamdisplay_regular"
             android:text="@string/prix"
-            android:textAlignment="textEnd"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="16sp"
             tools:layout_editor_absoluteX="67dp"
@@ -104,4 +104,11 @@
         app:layout_constraintTop_toBottomOf="@+id/voyageImage"
         tools:text="versVoyageText" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/white_line"
+        app:layout_constraintTop_toBottomOf="@+id/description"
+        android:layout_marginTop="@dimen/normal_padding"
+        android:layout_marginBottom="@dimen/normal_padding"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
