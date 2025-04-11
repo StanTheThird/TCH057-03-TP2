@@ -5,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!-- LinearLayout for additional content -->
     <LinearLayout
         android:id="@+id/versVoyagelayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
-
+    <!-- Price Text in a rounded frame -->
     <LinearLayout
         android:layout_width="74dp"
         android:layout_height="33dp"
@@ -30,24 +30,29 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/adlamdisplay_regular"
             android:text="@string/prix"
+            android:textAlignment="textEnd"
             android:textColor="@color/white"
             android:textSize="16sp"
             tools:layout_editor_absoluteX="67dp"
             tools:layout_editor_absoluteY="18dp" />
     </LinearLayout>
 
+    <!-- Image with rounded corners -->
     <ImageView
         android:id="@+id/voyageImage"
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:layout_marginTop="48dp"
-        android:background="@drawable/blue_rounded_frame_10"
+        android:background="@drawable/rounded_image_background"
         android:contentDescription="@string/todo"
+        android:scaleType="centerCrop"
+        android:clipToOutline="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/versVoyagelayout" />
 
+    <!-- Description Text below the image -->
     <TextView
         android:id="@+id/voyageDescriptionText"
         android:layout_width="0dp"
@@ -60,6 +65,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="parent" />
 
+    <!-- Destination Name Text -->
     <TextView
         android:id="@+id/voyageNameText"
         android:layout_width="302dp"
@@ -68,30 +74,34 @@
         android:text="@string/destination"
         android:textColor="@color/white"
         android:textSize="20sp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="22dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/versVoyageTexts" />
 
+    <!-- Subtitle Text for "Voyage Vers" -->
     <TextView
-        android:id="@+id/versVoyageText"
+        android:id="@+id/versVoyageTexts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
         android:fontFamily="@font/abeezee_regular"
         android:text="@string/voyage_vers"
         android:textColor="@color/white_50"
         android:textSize="12sp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="7dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="versVoyageText" />
 
+    <!-- Additional Description Text -->
     <TextView
-        android:id="@+id/versVoyageText2"
+        android:id="@+id/description"
         android:layout_width="423dp"
         android:layout_height="48dp"
         android:fontFamily="@font/abeezee_regular"
         android:text="@string/voyage_vers"
         android:textColor="@color/white"
         android:textSize="12sp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="228dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/voyageImage"
         tools:text="versVoyageText" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

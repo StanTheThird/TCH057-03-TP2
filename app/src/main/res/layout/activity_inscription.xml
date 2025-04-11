@@ -52,7 +52,6 @@
             android:textAlignment="center"
             android:textColor="@color/white_50"
             android:textSize="14sp" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -78,8 +77,8 @@
                 android:inputType="text"
                 android:hint="Nom"
                 android:padding="@dimen/large_padding"
-                android:Color="@color/white"
-                android:textColorHint="@color/white"/>
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
         </FrameLayout>
 
         <FrameLayout
@@ -96,10 +95,10 @@
                 android:inputType="text"
                 android:padding="@dimen/large_padding"
                 android:hint="Prénom"
-                android:Color="@color/white"
-                android:textColorHint="@color/white"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
         </FrameLayout>
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -114,10 +113,10 @@
                 android:inputType="textEmailAddress"
                 android:padding="@dimen/large_padding"
                 android:hint="Courriel"
-                android:Color="@color/white"
-                android:textColorHint="@color/white"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
         </FrameLayout>
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -132,10 +131,10 @@
                 android:inputType="number"
                 android:padding="@dimen/large_padding"
                 android:hint="Âge"
-                android:Color="@color/white"
-                android:textColorHint="@color/white"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
         </FrameLayout>
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -150,10 +149,10 @@
                 android:inputType="phone"
                 android:padding="@dimen/large_padding"
                 android:hint="Téléphone"
-                android:Color="@color/white"
-                android:textColorHint="@color/white"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
         </FrameLayout>
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -168,11 +167,9 @@
                 android:inputType="textPostalAddress"
                 android:padding="@dimen/large_padding"
                 android:hint="Adresse"
-                android:Color="@color/white"
-                android:textColorHint="@color/white"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
         </FrameLayout>
-
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -188,9 +185,8 @@
                 android:inputType="textPassword"
                 android:padding="@dimen/large_padding"
                 android:hint="Mot de Passe"
-                android:Color="@color/white"
-                android:textColorHint="@color/white"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
         </FrameLayout>
     </LinearLayout>
 
@@ -218,7 +214,6 @@
             android:text="S'inscrire"
             android:textColor="@color/white"
             android:textSize="18sp" />
-
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
@@ -234,6 +229,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="60dp" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"

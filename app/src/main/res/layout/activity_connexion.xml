@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/negative_padding"
             android:fontFamily="@font/adlamdisplay_regular"
-            android:text="Bienvenu!"
+            android:text="Bienvenue!"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="20sp" />
@@ -63,7 +63,6 @@
             android:textAlignment="center"
             android:textColor="@color/white_50"
             android:textSize="14sp" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -89,8 +88,8 @@
                 android:inputType="textEmailAddress"
                 android:hint="Courriel"
                 android:padding="@dimen/large_padding"
-                android:Color="@color/white"
-                android:textColorHint="@color/white"/>
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
         </FrameLayout>
 
         <FrameLayout
@@ -98,6 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/normal_padding"
             android:background="@drawable/white_rounded_frame_10_24">
+
             <EditText
                 android:id="@+id/password_imput"
                 android:layout_width="match_parent"
@@ -107,9 +107,8 @@
                 android:inputType="textPassword"
                 android:padding="@dimen/large_padding"
                 android:hint="Mot de Passe"
-                android:Color="@color/white"
-                android:textColorHint="@color/white"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
         </FrameLayout>
     </LinearLayout>
 
@@ -137,7 +136,6 @@
             android:text="Continuer"
             android:textColor="@color/white"
             android:textSize="18sp" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -160,8 +158,8 @@
             android:text="S'inscrire"
             android:textColor="@color/white"
             android:textSize="18sp" />
-
     </LinearLayout>
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
         android:layout_width="wrap_content"
@@ -175,6 +173,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="60dp" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
@@ -188,5 +187,4 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_end="30dp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

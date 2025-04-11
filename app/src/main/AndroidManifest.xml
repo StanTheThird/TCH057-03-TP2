@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Add Internet permission -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,40 +15,53 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TCH05703TP2"
         tools:targetApi="31">
+
         <activity
             android:name=".Historique"
             android:exported="false"
             android:label="@string/title_activity_historique"
-            android:theme="@style/Theme.TCH05703TP2" />
+            android:theme="@style/Theme.TCH05703TP2"
+            android:fitsSystemWindows="true" /> <!-- Ensure system bars do not overlap -->
+
         <activity
             android:name=".Voyage"
-            android:exported="false" />
+            android:exported="false"
+            android:fitsSystemWindows="true" /> <!-- Ensure system bars do not overlap -->
+
         <activity
             android:name=".Inscription"
             android:exported="false"
             android:label="@string/title_activity_inscription"
-            android:theme="@style/Theme.TCH05703TP2" />
+            android:theme="@style/Theme.TCH05703TP2"
+            android:fitsSystemWindows="true" /> <!-- Ensure system bars do not overlap -->
+
         <activity
             android:name=".Connexion"
             android:exported="false"
             android:label="@string/title_activity_connexion"
-            android:theme="@style/Theme.TCH05703TP2" />
+            android:theme="@style/Theme.TCH05703TP2"
+            android:fitsSystemWindows="true" /> <!-- Ensure system bars do not overlap -->
+
         <activity
             android:name=".Details"
             android:exported="false"
             android:label="@string/title_activity_details"
-            android:theme="@style/Theme.TCH05703TP2" />
+            android:theme="@style/Theme.TCH05703TP2"
+            android:fitsSystemWindows="true" /> <!-- Ensure system bars do not overlap -->
+
         <activity
             android:name=".Accueil"
             android:exported="false"
             android:label="@string/title_activity_accueil"
-            android:theme="@style/Theme.TCH05703TP2" />
+            android:theme="@style/Theme.TCH05703TP2"
+            android:fitsSystemWindows="true" /> <!-- Ensure system bars do not overlap -->
+
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:fitsSystemWindows="true"> <!-- Ensure system bars do not overlap -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

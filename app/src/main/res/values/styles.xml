@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Disable fullscreen to ensure the navigation and status bars are visible -->
+        <item name="android:windowFullscreen">false</item>
+        <!-- Set default window background -->
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+</resources>
