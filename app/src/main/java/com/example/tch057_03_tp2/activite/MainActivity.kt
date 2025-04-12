@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         val filterView = layoutInflater.inflate(R.layout.filter_overlay, null)
         filterDialog.setContentView(filterView)
 
-        val destinationField: Spinner = filterView.findViewById(R.id.spinnerDestination)
+        val destinationField: Spinner = filterView.findViewById(R.id.spinnerCountry)
         val priceMinField: EditText = filterView.findViewById(R.id.editTextPriceMin)
         val priceMaxField: EditText = filterView.findViewById(R.id.editTextPriceMax)
         val typeField: Spinner = filterView.findViewById(R.id.spinnerType)
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             monthEndField.adapter = adapter
         }
 
-        val destinations = listOf("All") + voyages.map { it.title }.distinct()
+        val destinations = listOf("All") + voyages.map { it.country }.distinct()
         ArrayAdapter(this, android.R.layout.simple_spinner_item, destinations).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             destinationField.adapter = adapter
@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity() {
         endDateMillis: Long?
     ) {
         filteredVoyages = voyages.filter { voyage ->
-            val matchesDestination = destination == "All" || voyage.title.contains(destination, ignoreCase = true)
+            val matchesDestination = destination == "All" || voyage.country.contains(destination, ignoreCase = true)
             val priceValue = voyage.price;
             val matchesPrice = (priceMin == null || priceValue >= priceMin) &&
                     (priceMax == null || priceValue <= priceMax)
@@ -170,7 +170,8 @@ class MainActivity : AppCompatActivity() {
     private fun mapVoyagesToAdapterData(voyages: List<VoyageRepository.Voyage>): List<Map<String, Any>> {
         return voyages.map { voyage ->
             mapOf(
-                "voyageNameText" to voyage.title,
+                "countryText" to voyage.country,
+                "placeText" to voyage.place,
                 "voyageImage" to voyage.imageUrl,
                 "possibleDates" to voyageRepository.convertLongListToDateStringList(voyage.possibleDates),
                 "prixText" to "%.0f$".format(voyage.price),

@@ -15,9 +15,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Price Text in a rounded frame -->
+
+    <!-- Image with rounded corners -->
+
+    <!-- Description Text below the image -->
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="33dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/white_rounded_frame_360"
         android:orientation="vertical"
         android:padding="6dp"
@@ -37,22 +43,20 @@
             tools:layout_editor_absoluteY="18dp" />
     </LinearLayout>
 
-    <!-- Image with rounded corners -->
     <ImageView
         android:id="@+id/voyageImage"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="72dp"
         android:background="@drawable/rounded_image_background"
+        android:clipToOutline="true"
         android:contentDescription="@string/todo"
         android:scaleType="centerCrop"
-        android:clipToOutline="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/versVoyagelayout" />
 
-    <!-- Description Text below the image -->
     <TextView
         android:id="@+id/voyageDescriptionText"
         android:layout_width="0dp"
@@ -66,18 +70,42 @@
         app:layout_constraintTop_toBottomOf="parent" />
 
     <!-- Destination Name Text -->
-    <TextView
-        android:id="@+id/voyageNameText"
-        android:layout_width="302dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/adlamdisplay_regular"
-        android:text="@string/destination"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/versVoyageTexts" />
+
+    <!-- Country -->
+
+    <!-- Place -->
 
     <!-- Subtitle Text for "Voyage Vers" -->
+
+    <TextView
+        android:id="@+id/countryText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/adlamdisplay_regular"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Pays : Maldives" />
+
+    <TextView
+        android:id="@+id/placeText"
+        android:layout_width="0dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="96dp"
+        android:fontFamily="@font/adlamdisplay_regular"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Lieu : Crystal Cove" />
+
     <TextView
         android:id="@+id/versVoyageTexts"
         android:layout_width="wrap_content"
@@ -111,4 +139,5 @@
         app:layout_constraintTop_toBottomOf="@+id/description"
         android:layout_marginTop="@dimen/normal_padding"
         android:layout_marginBottom="@dimen/normal_padding"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

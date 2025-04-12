@@ -29,12 +29,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/adlamdisplay_regular"
-        android:text="Crystal Cove, Maldives"
+        android:text="Crystal Cove"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@id/voyageSubtitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Country -->
+    <TextView
+        android:id="@+id/countryText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pays : Maldives"
+        android:fontFamily="@font/adlamdisplay_regular"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/voyageTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -46,7 +60,7 @@
         android:layout_marginTop="8dp"
         android:scaleType="centerCrop"
         android:background="@drawable/rounded_corners"
-        app:layout_constraintTop_toBottomOf="@id/voyageTitle"
+        app:layout_constraintTop_toBottomOf="@id/countryText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -56,7 +70,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/abeezee_regular"
-        android:text="Sleep in glowing overwater bungalows  snorkel with golden manta rays in this bioluminescent paradise."
+        android:text="Sleep in glowing overwater bungalows snorkel with golden manta rays in this bioluminescent paradise."
         android:textColor="@color/soft_lavender"
         android:textSize="14sp"
         android:layout_marginTop="8dp"

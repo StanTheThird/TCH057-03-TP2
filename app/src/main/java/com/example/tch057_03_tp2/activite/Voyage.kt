@@ -34,8 +34,7 @@ class Voyage : AppCompatActivity() {
             return
         }
 
-        // Bind voyage data to views
-        val titleView: TextView = findViewById(R.id.voyageTitle)
+        // Bind voyage data to view
         val subtitleView: TextView = findViewById(R.id.voyageSubtitle)
         val imageView: ImageView = findViewById(R.id.voyageImage)
         val descriptionView: TextView = findViewById(R.id.voyageDescription)
@@ -44,10 +43,13 @@ class Voyage : AppCompatActivity() {
         val peopleSelector: Spinner = findViewById(R.id.peopleSelector)
         val remainingPlacesView: TextView = findViewById(R.id.placesRestantesText)
         val reserveButton: Button = findViewById(R.id.bookButton)
+        val countryText: TextView = findViewById(R.id.countryText)
+        val placeText: TextView = findViewById(R.id.voyageTitle)
         priceText = findViewById(R.id.voyagePrice)
+        countryText.text = "Pays : ${voyage.country}"
+        placeText.text = voyage.place
 
-        titleView.text = voyage.title
-        subtitleView.text = "Voyage vers ${voyage.title}"
+
         descriptionView.text = voyage.description
         durationView.text = "Durée : ${voyage.duree}"
         remainingPlacesView.text = "Places restantes : ${voyage.placesRestantes}"
@@ -125,12 +127,13 @@ class Voyage : AppCompatActivity() {
 
             val values = ContentValues().apply {
                 put(ReservationContract.Colonnes.VOYAGE_ID, voyage.id)
-                put(ReservationContract.Colonnes.DESTINATION, voyage.title)
+
                 put(ReservationContract.Colonnes.TRAVEL_DATE, selectedDate)
                 put(ReservationContract.Colonnes.PASSENGER_COUNT, selectedPeople)
                 put(ReservationContract.Colonnes.PRICE, priceValue)
                 put(ReservationContract.Colonnes.STATUS, "Confirmée")
                 // BOOKING_DATE is auto-filled with datetime('now')
+
             }
 
             val newRowId = db.insert(ReservationContract.TABLE_NAME, null, values)
