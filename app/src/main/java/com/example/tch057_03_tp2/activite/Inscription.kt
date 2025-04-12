@@ -1,10 +1,11 @@
-package com.example.tch057_03_tp2
+package com.example.tch057_03_tp2.activite
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.tch057_03_tp2.R
 
 class Inscription : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

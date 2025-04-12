@@ -1,4 +1,4 @@
-package com.example.tch057_03_tp2
+package com.example.tch057_03_tp2.activite
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.tch057_03_tp2.R
 
 class GenericAdapter(
     private val context: Context,

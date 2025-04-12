@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@color/dark_blue"
-    tools:context=".MainActivity">
+    tools:context=".activite.MainActivity">
 
     <!-- App Name Text -->
     <TextView

@@ -1,6 +1,5 @@
-package com.example.tch057_03_tp2
+package com.example.tch057_03_tp2.activite
 
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -15,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tch057_03_tp2.R
 import java.text.SimpleDateFormat
 import java.util.*
 

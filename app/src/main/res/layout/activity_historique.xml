@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="@color/dark_blue"
     android:fitsSystemWindows="true"
-    tools:context=".Historique">
+    tools:context=".activite.Historique">
 
     <!-- Your existing header content remains the same -->
     <TextView
