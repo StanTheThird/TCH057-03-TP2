@@ -53,9 +53,9 @@ class Voyage : AppCompatActivity() {
             .into(imageView)
 
         // Populate dates dynamically
-        selectedDate = voyage.possibleDates.first() // Default to the first date
+        selectedDate = voyageRepository.convertLongToDateString(voyage.possibleDates.first()) // Default to the first date
         dateContainer.removeAllViews()
-        for (date in voyage.possibleDates) {
+        for (date in voyageRepository.convertLongListToDateStringList(voyage.possibleDates)) {
             val dateButton = Button(this).apply {
                 text = date
                 setBackgroundResource(R.drawable.rounded_button_unselected)

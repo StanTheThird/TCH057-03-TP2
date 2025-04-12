@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.example.tch057_03_tp2.R
-import java.text.ParseException
-import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -60,31 +58,55 @@ class MainActivity : AppCompatActivity() {
         val priceMinField: EditText = filterView.findViewById(R.id.editTextPriceMin)
         val priceMaxField: EditText = filterView.findViewById(R.id.editTextPriceMax)
         val typeField: Spinner = filterView.findViewById(R.id.spinnerType)
-        val dateStartField: EditText = filterView.findViewById(R.id.editTextDateStart)
-        val dateEndField: EditText = filterView.findViewById(R.id.editTextDateEnd)
+        val dayStartField: Spinner = filterView.findViewById(R.id.spinnerDayStart)
+        val monthStartField: Spinner = filterView.findViewById(R.id.spinnerMonthStart)
+        val dayEndField: Spinner = filterView.findViewById(R.id.spinnerDayEnd)
+        val monthEndField: Spinner = filterView.findViewById(R.id.spinnerMonthEnd)
         val applyButton: Button = filterView.findViewById(R.id.buttonApplyFilters)
 
-        // Populate destination spinner
-        val destinations = listOf("All") + voyages.map { it.title }.distinct()
-        val destinationAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, destinations)
-        destinationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        destinationField.adapter = destinationAdapter
+        // Populate spinners
+        val days = listOf("Any") + (1..31).map { it.toString() }
+        val months = listOf("Any") + listOf("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre")
 
-        // Populate type spinner
-        val types = listOf("All", "Adventure", "Relaxation", "Cultural", "Historical")
-        val typeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, types)
-        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        typeField.adapter = typeAdapter
+        ArrayAdapter(this, android.R.layout.simple_spinner_item, days).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            dayStartField.adapter = adapter
+            dayEndField.adapter = adapter
+        }
+
+        ArrayAdapter(this, android.R.layout.simple_spinner_item, months).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            monthStartField.adapter = adapter
+            monthEndField.adapter = adapter
+        }
+
+        val destinations = listOf("All") + voyages.map { it.title }.distinct()
+        ArrayAdapter(this, android.R.layout.simple_spinner_item, destinations).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            destinationField.adapter = adapter
+        }
+
+        val types = listOf("All") + voyages.map { it.type }.distinct()
+        ArrayAdapter(this, android.R.layout.simple_spinner_item, types).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            typeField.adapter = adapter
+        }
 
         applyButton.setOnClickListener {
             val selectedDestination = destinationField.selectedItem.toString()
             val minPrice = priceMinField.text.toString().toIntOrNull()
             val maxPrice = priceMaxField.text.toString().toIntOrNull()
             val selectedType = typeField.selectedItem.toString()
-            val startDate = dateStartField.text.toString()
-            val endDate = dateEndField.text.toString()
 
-            applyFilters(selectedDestination, minPrice, maxPrice, selectedType, startDate, endDate)
+            val startDay = if (dayStartField.selectedItem.toString() == "Any") null else dayStartField.selectedItem.toString().toIntOrNull()
+            val startMonth = if (monthStartField.selectedItem.toString() == "Any") null else monthStartField.selectedItemPosition
+            val endDay = if (dayEndField.selectedItem.toString() == "Any") null else dayEndField.selectedItem.toString().toIntOrNull()
+            val endMonth = if (monthEndField.selectedItem.toString() == "Any") null else monthEndField.selectedItemPosition
+
+            val startDateMillis = convertDayMonthToMilliseconds(startDay, startMonth)
+            val endDateMillis = convertDayMonthToMilliseconds(endDay, endMonth)
+
+            applyFilters(selectedDestination, minPrice, maxPrice, selectedType, startDateMillis, endDateMillis)
             filterDialog.dismiss()
         }
 
@@ -96,43 +118,39 @@ class MainActivity : AppCompatActivity() {
         priceMin: Int?,
         priceMax: Int?,
         type: String,
-        dateStart: String,
-        dateEnd: String
+        startDateMillis: Long?,
+        endDateMillis: Long?
     ) {
-        val dateFormatter = SimpleDateFormat("dd MMMM", Locale.getDefault())
-
         filteredVoyages = voyages.filter { voyage ->
             val matchesDestination = destination == "All" || voyage.title.contains(destination, ignoreCase = true)
             val priceValue = voyage.price.replace("$", "").replace(",", "").toIntOrNull() ?: 0
             val matchesPrice = (priceMin == null || priceValue >= priceMin) &&
                     (priceMax == null || priceValue <= priceMax)
-            val matchesType = type == "All" || voyage.description.contains(type, ignoreCase = true)
-            val startDate = try {
-                if (dateStart.isNotEmpty()) dateFormatter.parse(dateStart) else null
-            } catch (e: ParseException) {
-                null
-            }
-            val endDate = try {
-                if (dateEnd.isNotEmpty()) dateFormatter.parse(dateEnd) else null
-            } catch (e: ParseException) {
-                null
-            }
+            val matchesType = type == "All" || voyage.type.contains(type, ignoreCase = true)
 
-            val matchesDate = voyage.possibleDates.any { possibleDate ->
-                val parsedDate = try {
-                    dateFormatter.parse(possibleDate)
-                } catch (e: ParseException) {
-                    null
-                }
-                parsedDate != null &&
-                        (startDate == null || parsedDate >= startDate) &&
-                        (endDate == null || parsedDate <= endDate)
+            val matchesDate = voyage.possibleDates.any { date ->
+                val returnDateMillis = date + convertDurationToMilliseconds(voyage.duree)
+                (startDateMillis == null || date >= startDateMillis) &&
+                        (endDateMillis == null || returnDateMillis <= endDateMillis)
             }
 
             matchesDestination && matchesPrice && matchesType && matchesDate
         }
 
         adapter.updateItems(mapVoyagesToAdapterData(filteredVoyages))
+    }
+
+    private fun convertDayMonthToMilliseconds(day: Int?, month: Int?): Long? {
+        if (day == null || month == null) return null
+        val calendar = Calendar.getInstance()
+        calendar.set(2025, month - 1, day, 0, 0, 0) // Set year to 2025 and time to 12:00 AM
+        calendar.set(Calendar.MILLISECOND, 0)
+        return calendar.timeInMillis
+    }
+
+    private fun convertDurationToMilliseconds(duration: String): Long {
+        val days = duration.split(" ")[0].toIntOrNull() ?: 0
+        return days * 24 * 60 * 60 * 1000L // Convert days to milliseconds
     }
 
     private fun navigateToVoyageDetails(voyage: VoyageRepository.Voyage) {
@@ -148,7 +166,8 @@ class MainActivity : AppCompatActivity() {
                 "voyageNameText" to voyage.title,
                 "voyageImage" to voyage.imageUrl,
                 "prixText" to voyage.price,
-                "description" to voyage.description
+                "description" to voyage.description,
+                "possibleDates" to voyageRepository.convertLongListToDateStringList(voyage.possibleDates)
             )
         }
     }

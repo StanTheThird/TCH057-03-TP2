@@ -1,5 +1,9 @@
 package com.example.tch057_03_tp2.activite
 
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
 class VoyageRepository {
     data class Voyage(
         val id: Int,
@@ -9,9 +13,11 @@ class VoyageRepository {
         val description: String,
         val placesRestantes: Int,
         val duree: String,
-        val possibleDates: List<String>
+        val possibleDates: List<Long>,
+        val type: String
     )
 
+    val types = listOf("All", "Adventure", "Relaxation", "Cultural", "Historical")
     private val voyageList = listOf(
         Voyage(
             id = 1,
@@ -21,7 +27,8 @@ class VoyageRepository {
             description = "Dormez dans des bungalows lumineux sur l'eau et plongez avec des raies manta dorées dans ce paradis bioluminescent.",
             placesRestantes = 13,
             duree = "5 jours",
-            possibleDates = listOf("22 Avril", "5 Mai", "12 Mai", "16 Juin", "30 Août")
+            possibleDates = listOf(1745193600000L, 1746384000000L, 1746988800000L, 1750012800000L, 1755820800000L), // Dates: "22 Avril", "5 Mai", "12 Mai", "16 Juin", "30 Août"
+            type = "Relaxation"
         ),
         Voyage(
             id = 2,
@@ -31,7 +38,8 @@ class VoyageRepository {
             description = "Découvrez les bâtiments emblématiques blanchis à la chaux avec des dômes bleus surplombant la mer Égée.",
             placesRestantes = 8,
             duree = "7 jours",
-            possibleDates = listOf("15 Mai", "20 Mai", "30 Mai", "11 Juin", "30 Août")
+            possibleDates = listOf(1747161600000L, 1747680000000L, 1748457600000L, 1750204800000L, 1755820800000L), // Dates: "15 Mai", "20 Mai", "30 Mai", "11 Juin", "30 Août"
+            type = "Cultural"
         ),
         Voyage(
             id = 3,
@@ -41,7 +49,8 @@ class VoyageRepository {
             description = "Explorez des temples historiques, des jardins tranquilles et les fascinantes fleurs de cerisier de Kyoto.",
             placesRestantes = 5,
             duree = "10 jours",
-            possibleDates = listOf("5 Juin", "12 Juin", "20 Juin", "26 Juin", "12 Août")
+            possibleDates = listOf(1750012800000L, 1750617600000L, 1751395200000L, 1751913600000L, 1755283200000L), // Dates: "5 Juin", "12 Juin", "20 Juin", "26 Juin", "12 Août"
+            type = "Cultural"
         ),
         Voyage(
             id = 4,
@@ -51,7 +60,8 @@ class VoyageRepository {
             description = "Admirez la majesté du Mont Fuji et explorez les magnifiques paysages environnants.",
             placesRestantes = 10,
             duree = "6 jours",
-            possibleDates = listOf("10 Avril", "20 Mai", "15 Juin", "5 Juillet", "25 Août")
+            possibleDates = listOf(1744243200000L, 1747680000000L, 1750704000000L, 1752105600000L, 1755993600000L), // Dates: "10 Avril", "20 Mai", "15 Juin", "5 Juillet", "25 Août"
+            type = "Adventure"
         ),
         Voyage(
             id = 5,
@@ -61,7 +71,8 @@ class VoyageRepository {
             description = "Plongez dans l'histoire de la Rome antique en visitant l'emblématique Colisée.",
             placesRestantes = 15,
             duree = "4 jours",
-            possibleDates = listOf("1 Mai", "12 Mai", "24 Juin", "10 Juillet", "20 Août")
+            possibleDates = listOf(1746384000000L, 1746988800000L, 1751395200000L, 1752278400000L, 1755734400000L), // Dates: "1 Mai", "12 Mai", "24 Juin", "10 Juillet", "20 Août"
+            type = "Historical"
         ),
         Voyage(
             id = 6,
@@ -71,7 +82,8 @@ class VoyageRepository {
             description = "Découvrez l'histoire de la première explosion nucléaire au Site Trinity.",
             placesRestantes = 8,
             duree = "3 jours",
-            possibleDates = listOf("7 Avril", "20 Juillet", "16 Octobre")
+            possibleDates = listOf(1744070400000L, 1752969600000L, 1760870400000L), // Dates: "7 Avril", "20 Juillet", "16 Octobre"
+            type = "Historical"
         ),
         Voyage(
             id = 7,
@@ -81,7 +93,8 @@ class VoyageRepository {
             description = "Visitez Nagasaki, un mélange fascinant d'histoire et de culture japonaise.",
             placesRestantes = 12,
             duree = "5 jours",
-            possibleDates = listOf("15 Mai", "25 Juin", "10 Juillet", "20 Août", "5 Septembre")
+            possibleDates = listOf(1747161600000L, 1751395200000L, 1752278400000L, 1755734400000L, 1757116800000L), // Dates: "15 Mai", "25 Juin", "10 Juillet", "20 Août", "5 Septembre"
+            type = "Cultural"
         ),
         Voyage(
             id = 8,
@@ -91,7 +104,8 @@ class VoyageRepository {
             description = "Explorez la ville magique d'Istanbul, carrefour entre l'Orient et l'Occident.",
             placesRestantes = 18,
             duree = "6 jours",
-            possibleDates = listOf("12 Avril", "1 Mai", "20 Juin", "15 Juillet", "10 Août")
+            possibleDates = listOf(1744329600000L, 1746384000000L, 1751395200000L, 1752604800000L, 1755129600000L), // Dates: "12 Avril", "1 Mai", "20 Juin", "15 Juillet", "10 Août"
+            type = "Cultural"
         ),
         Voyage(
             id = 9,
@@ -101,10 +115,32 @@ class VoyageRepository {
             description = "Découvrez les plages ensoleillées et les trésors culturels de Malaga.",
             placesRestantes = 20,
             duree = "5 jours",
-            possibleDates = listOf("10 Mai", "25 Juin", "5 Juillet", "20 Août", "15 Septembre")
+            possibleDates = listOf(1747075200000L, 1751395200000L, 1752105600000L, 1755734400000L, 1757894400000L), // Dates: "10 Mai", "25 Juin", "5 Juillet", "20 Août", "15 Septembre"
+            type = "Relaxation"
         )
     )
 
+
+    // Function to convert a single millisecond timestamp to a French date string in the format "12 juin"
+    fun convertLongToDateString(timestamp: Long): String {
+        val date = Date(timestamp)
+        val frenchLocale = Locale("fr", "FR")
+        val formatter = SimpleDateFormat("d MMMM", frenchLocale)
+        return formatter.format(date)
+    }
+
+    // Function to convert a list of millisecond timestamps to a list of French date strings
+    fun convertLongListToDateStringList(timestamps: List<Long>): List<String> {
+        return timestamps.map { convertLongToDateString(it) }
+    }
+
+    // Function to convert a date string like "12 juin 2025" into milliseconds (12:00:00 AM by default)
+    fun convertDateStringToMilliseconds(dateString: String): Long {
+        val frenchLocale = Locale("fr", "FR")
+        val formatter = SimpleDateFormat("d MMMM yyyy", frenchLocale)
+        val date = formatter.parse(dateString)
+        return date?.time ?: throw IllegalArgumentException("Invalid date format: $dateString")
+    }
     fun fetchVoyages(): List<Voyage> {
         return voyageList
     }
