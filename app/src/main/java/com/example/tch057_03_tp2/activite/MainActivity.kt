@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity() {
     ) {
         filteredVoyages = voyages.filter { voyage ->
             val matchesDestination = destination == "All" || voyage.title.contains(destination, ignoreCase = true)
-            val priceValue = voyage.price.replace("$", "").replace(",", "").toIntOrNull() ?: 0
+            val priceValue = voyage.price;
             val matchesPrice = (priceMin == null || priceValue >= priceMin) &&
                     (priceMax == null || priceValue <= priceMax)
             val matchesType = type == "All" || voyage.type.contains(type, ignoreCase = true)
@@ -172,7 +172,7 @@ class MainActivity : AppCompatActivity() {
             mapOf(
                 "voyageNameText" to voyage.title,
                 "voyageImage" to voyage.imageUrl,
-                "possibleDates" to voyageRepository.convertLongListToDateStringList(voyage.possibleDates)
+                "possibleDates" to voyageRepository.convertLongListToDateStringList(voyage.possibleDates),
                 "prixText" to "%.0f$".format(voyage.price),
                 "description" to voyage.description
             )
