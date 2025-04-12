@@ -109,7 +109,7 @@
             android:textSize="14sp"/>
 
         <Button
-            android:id="@+id/cancelButton"
+            android:id="@+id/cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Annuler"
@@ -117,6 +117,8 @@
             android:backgroundTint="@color/bright_blue"
             android:fontFamily="@font/adlamdisplay_regular"
             android:textColor="@color/white"
-            android:paddingHorizontal="14dp"/>
+            android:textSize="14sp"
+            android:paddingHorizontal="@dimen/large_padding"
+            android:paddingVertical="@dimen/normal_padding"/>
     </LinearLayout>
 </LinearLayout>

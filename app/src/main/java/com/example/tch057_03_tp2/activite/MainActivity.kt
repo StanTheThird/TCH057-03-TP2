@@ -6,6 +6,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+//import com.example.myapplication_sqllite.sqlite.DbUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.example.tch057_03_tp2.R
 import java.util.*
@@ -25,6 +26,12 @@ class MainActivity : AppCompatActivity() {
         voyageRepository = VoyageRepository()
         voyages = voyageRepository.fetchVoyages()
         filteredVoyages = voyages
+
+        //val nbReservationText: TextView = findViewById(R.id.nb_reservation_text)
+        //val dbHelper = DbUtil(this)
+        //val reservationCount = dbHelper.getReservationCount()
+        //nbReservationText.text = reservationCount.toString()
+
 
         // Set up RecyclerView
         recyclerView = findViewById(R.id.listVoyage)
@@ -165,9 +172,9 @@ class MainActivity : AppCompatActivity() {
             mapOf(
                 "voyageNameText" to voyage.title,
                 "voyageImage" to voyage.imageUrl,
-                "prixText" to voyage.price,
-                "description" to voyage.description,
                 "possibleDates" to voyageRepository.convertLongListToDateStringList(voyage.possibleDates)
+                "prixText" to "%.0f$".format(voyage.price),
+                "description" to voyage.description
             )
         }
     }
