@@ -1,14 +1,16 @@
-package com.example.tch057_03_tp2
+package com.example.tch057_03_tp2.activite
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.*
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.text.SimpleDateFormat
 import java.util.Locale
+import com.example.tch057_03_tp2.R
 
 class MainActivity : AppCompatActivity() {
 
@@ -133,5 +135,32 @@ class MainActivity : AppCompatActivity() {
                 "description" to voyage.description
             )
         }
+
+        // Find the LinearLayout you want to make clickable
+        val reservationBtn = findViewById<LinearLayout>(R.id.reservation_btn)
+
+        // Set click listener
+        reservationBtn.setOnClickListener {
+            // Create an Intent to start the HistoriqueActivity
+            val intent = Intent(this, Historique::class.java)
+            startActivity(intent)
+        }
+
+        // Set up RecyclerView with GenericAdapter
+        val recyclerView: RecyclerView = findViewById(R.id.listVoyage)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = GenericAdapter(
+            context = this,
+            layoutId = R.layout.item_voyage, // Specify the layout for list items
+            items = voyageData,
+            onItemClick = { position ->
+                // Pass only the voyage ID to VoyageActivity
+                val selectedVoyage = voyages[position]
+                val intent = Intent(this, Voyage::class.java).apply {
+                    putExtra("voyageId", selectedVoyage.id) // Pass the ID
+                }
+                startActivity(intent)
+            }
+        )
     }
 }

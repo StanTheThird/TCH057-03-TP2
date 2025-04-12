@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@color/dark_blue"
-    tools:context=".MainActivity">
+    tools:context=".activite.MainActivity">
 
     <!-- App Name Text -->
     <TextView
@@ -24,8 +24,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Top LinearLayout for User Info -->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -47,7 +46,10 @@
             android:id="@+id/left_section"
             android:layout_width="145dp"
             android:layout_height="46dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/salutation_text"
@@ -70,13 +72,21 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/right_section"
+            android:id="@+id/reservation_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/white_rounded_frame_360"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="6dp">
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:paddingLeft="@dimen/large_padding"
+            android:paddingTop="@dimen/normal_padding"
+            android:paddingRight="@dimen/large_padding"
+            android:paddingBottom="@dimen/normal_padding"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/reservation_text"
@@ -107,6 +117,7 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Filter Button -->
     <LinearLayout

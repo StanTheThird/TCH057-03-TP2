@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_blue"
-    tools:context=".MainActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".activite.Historique">
 
+    <!-- Your existing header content remains the same -->
     <TextView
         android:id="@+id/app_name_text"
         android:layout_width="0dp"
@@ -22,6 +25,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/white_rounded_frame_10"
@@ -30,15 +34,15 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/guideline2">
 
-        <!-- Left Section (Bonjour + Nom utilisateur) -->
+        <!-- Left Section -->
         <LinearLayout
             android:id="@+id/left_section"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/salutation_text"
@@ -60,18 +64,18 @@
                 android:textSize="18sp" />
         </LinearLayout>
 
-        <!-- Right Section (Réservations + Counter) -->
+        <!-- Right Section -->
         <LinearLayout
-            android:id="@+id/right_section"
+            android:id="@+id/reservation_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/white_rounded_frame_360"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="6dp"
+            android:padding="@dimen/normal_padding"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/homeBtn"
@@ -80,9 +84,22 @@
                 android:layout_weight="1"
                 app:srcCompat="@android:drawable/ic_menu_revert" />
         </LinearLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- Add RecyclerView below the header -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/historiqueRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline1"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+    <!-- Your existing guidelines -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
         android:layout_width="wrap_content"

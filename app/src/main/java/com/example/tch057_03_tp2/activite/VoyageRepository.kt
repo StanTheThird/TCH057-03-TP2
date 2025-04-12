@@ -1,4 +1,4 @@
-package com.example.tch057_03_tp2
+package com.example.tch057_03_tp2.activite
 
 class VoyageRepository {
     data class Voyage(

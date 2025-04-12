@@ -17,26 +17,26 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".Historique"
+            android:name=".activite.Historique"
             android:exported="false"
             android:label="@string/title_activity_historique"
             android:theme="@style/Theme.TCH05703TP2"
             android:fitsSystemWindows="true" /> <!-- Ensure system bars do not overlap -->
 
         <activity
-            android:name=".Voyage"
+            android:name=".activite.Voyage"
             android:exported="false"
             android:fitsSystemWindows="true" /> <!-- Ensure system bars do not overlap -->
 
         <activity
-            android:name=".Inscription"
+            android:name=".activite.Inscription"
             android:exported="false"
             android:label="@string/title_activity_inscription"
             android:theme="@style/Theme.TCH05703TP2"
             android:fitsSystemWindows="true" /> <!-- Ensure system bars do not overlap -->
 
         <activity
-            android:name=".Connexion"
+            android:name=".activite.Connexion"
             android:exported="false"
             android:label="@string/title_activity_connexion"
             android:theme="@style/Theme.TCH05703TP2"
@@ -57,7 +57,7 @@
             android:fitsSystemWindows="true" /> <!-- Ensure system bars do not overlap -->
 
         <activity
-            android:name=".MainActivity"
+            android:name=".activite.MainActivity"
             android:exported="true"
             android:fitsSystemWindows="true"> <!-- Ensure system bars do not overlap -->
             <intent-filter>
