@@ -78,8 +78,8 @@ class MainActivity : AppCompatActivity() {
 
         applyButton.setOnClickListener {
             val selectedDestination = destinationField.selectedItem.toString()
-            val minPrice = priceMinField.text.toString().toIntOrNull()
-            val maxPrice = priceMaxField.text.toString().toIntOrNull()
+            val minPrice = priceMinField.text.toString().toDoubleOrNull()
+            val maxPrice = priceMaxField.text.toString().toDoubleOrNull()
             val selectedType = typeField.selectedItem.toString()
             val startDate = dateStartField.text.toString()
             val endDate = dateEndField.text.toString()
@@ -93,8 +93,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun applyFilters(
         destination: String,
-        priceMin: Int?,
-        priceMax: Int?,
+        priceMin: Double?,
+        priceMax: Double?,
         type: String,
         dateStart: String,
         dateEnd: String
@@ -103,9 +103,8 @@ class MainActivity : AppCompatActivity() {
 
         filteredVoyages = voyages.filter { voyage ->
             val matchesDestination = destination == "All" || voyage.title.contains(destination, ignoreCase = true)
-            val priceValue = voyage.price.replace("$", "").replace(",", "").toIntOrNull() ?: 0
-            val matchesPrice = (priceMin == null || priceValue >= priceMin) &&
-                    (priceMax == null || priceValue <= priceMax)
+            val matchesPrice = (priceMin == null || voyage.price >= priceMin) &&
+                    (priceMax == null || voyage.price <= priceMax)
             val matchesType = type == "All" || voyage.description.contains(type, ignoreCase = true)
             val startDate = try {
                 if (dateStart.isNotEmpty()) dateFormatter.parse(dateStart) else null
@@ -147,7 +146,7 @@ class MainActivity : AppCompatActivity() {
             mapOf(
                 "voyageNameText" to voyage.title,
                 "voyageImage" to voyage.imageUrl,
-                "prixText" to voyage.price,
+                "prixText" to "%.0f$".format(voyage.price),
                 "description" to voyage.description
             )
         }

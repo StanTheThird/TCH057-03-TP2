@@ -117,6 +117,8 @@
             android:backgroundTint="@color/bright_blue"
             android:fontFamily="@font/adlamdisplay_regular"
             android:textColor="@color/white"
-            android:paddingHorizontal="14dp"/>
+            android:textSize="14sp"
+            android:paddingHorizontal="@dimen/large_padding"
+            android:paddingVertical="@dimen/normal_padding"/>
     </LinearLayout>
 </LinearLayout>
