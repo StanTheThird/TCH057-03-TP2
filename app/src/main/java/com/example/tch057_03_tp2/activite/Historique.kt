@@ -7,6 +7,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -14,8 +15,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication_sqllite.sqlite.DbUtil
 import com.example.tch057_03_tp2.R
 import java.text.SimpleDateFormat
+import android.content.Intent
+import android.widget.ImageView
 import java.util.*
 
 class Historique : AppCompatActivity() {
@@ -33,32 +37,31 @@ class Historique : AppCompatActivity() {
         // Set up RecyclerView with GenericAdapter
         val recyclerView = findViewById<RecyclerView>(R.id.historiqueRecyclerView)
 
-        // Create dummy data for 4 history items (mix of confirmed and canceled)
-        val dummyItems = List(7) { index ->
-            val isCanceled = index % 2 == 0 // Every other item is canceled for demo
-            val voyageDate = Calendar.getInstance().apply {
-                add(Calendar.DAY_OF_YEAR, index * 7) // Spread dates by weeks
+        val dbHelper = DbUtil(this)
+        if (!dbHelper.checkDatabase()) {
+            // Créer la base de données si elle n'existe pas
+            dbHelper.writableDatabase.close()
+        }
+        val reservations = dbHelper.getAllReservations()
+
+        val items = reservations.map { res ->
+            // Formater la date de réservation (enlève l'heure si elle existe)
+            val bookingDate = if (res.booking_date.contains(" ")) {
+                res.booking_date.split(" ")[0] // Prend seulement la partie date
+            } else {
+                res.booking_date
             }
 
-            val cancelDate = if (isCanceled) {
-                Calendar.getInstance().apply {
-                    time = voyageDate.time
-                    add(Calendar.DAY_OF_YEAR, -3) // Canceled 3 days before voyage
-                }
-            } else null
-
-            mutableMapOf<String, Any>().apply {
-                put("voyageVersText", "Voyage vers")
-                put("destinationText", "Destination ${index + 1}")
-                put("voyage_date_text", formatDateForDisplay(voyageDate.time))
-                put("voyage_date_raw", formatDateForStorage(voyageDate.time))
-                put("reservation_date_text", "Réservé le ${formatDateForStorage(voyageDate.time)}")
-                put("price_text", "Prix : ${(index + 1) * 700}\$")
-                put("status_text", if (isCanceled) "Statut : Annulée" else "Statut : Confirmée")
-                put("status_part", if (isCanceled) "Annulée" else "Confirmée")
-                put("is_canceled", isCanceled)
-                put("cancel_date", cancelDate?.let { formatDateForStorage(it.time) } ?: "")
-            }
+            mutableMapOf<String, Any>(
+                "voyageVersText" to "Voyage vers",
+                "destinationText" to res.destination,
+                "voyage_date_text" to res.travel_date,
+                "reservation_date_text" to "Réservé le $bookingDate",
+                "price_text" to "Prix : ${res.price.toInt()}$",
+                "status_text" to "Statut : ${res.status}",
+                "status_part" to res.status,
+                "is_canceled" to (res.status.lowercase() == "annulée")
+            )
         }
 
         recyclerView.apply {
@@ -70,7 +73,7 @@ class Historique : AppCompatActivity() {
             adapter = GenericAdapter(
                 context = this@Historique,
                 layoutId = R.layout.item_historique,
-                items = dummyItems,
+                items = items,
                 onItemClick = { position ->
                     // Handle item click if needed
                 }
@@ -98,43 +101,58 @@ class Historique : AppCompatActivity() {
                 override fun onChildViewAttachedToWindow(view: View) {
                     val position = getChildAdapterPosition(view)
                     if (position != RecyclerView.NO_POSITION) {
-                        val item = dummyItems[position]
+                        val item = items[position]
 
-                        // 1. Handle status text coloring
+                        // 1. Met à jour le texte du statut
+                        val status = item["status_part"] as? String ?: ""
                         val statusText = view.findViewById<TextView>(R.id.status_text)
-                        val fullText = statusText.text.toString()
-                        val coloredPart = item["status_part"] as? String
+                        val fullText = "Statut : $status"
+                        statusText.text = fullText
 
-                        coloredPart?.let {
-                            val spannable = SpannableString(fullText)
-                            val startIndex = fullText.indexOf(it)
-                            if (startIndex >= 0) {
-                                val colorRes = if (it == "Confirmée") R.color.success_green else R.color.error_red
-                                spannable.setSpan(
-                                    ForegroundColorSpan(
-                                        ContextCompat.getColor(
-                                            this@Historique,
-                                            colorRes
-                                        )
-                                    ),
-                                    startIndex,
-                                    startIndex + it.length,
-                                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                                )
-                                statusText.text = spannable
-                            }
+                        // 2. Applique la couleur
+                        val spannable = SpannableString(fullText)
+                        val startIndex = fullText.indexOf(status)
+                        if (startIndex >= 0) {
+                            val colorRes = if (status.lowercase() == "confirmée") R.color.success_green else R.color.error_red
+                            spannable.setSpan(
+                                ForegroundColorSpan(ContextCompat.getColor(this@Historique, colorRes)),
+                                startIndex,
+                                startIndex + status.length,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+                            statusText.text = spannable
                         }
 
                         // 2. Handle cancel button/status
-                        val cancelButton = view.findViewById<Button>(R.id.cancelButton)
+                        val cancelButton = view.findViewById<Button>(R.id.cancel_button)
                         val isCanceled = item["is_canceled"] as? Boolean ?: false
 
-                        if (isCanceled) {
-                            cancelButton.visibility = View.GONE  // Completely hides the button
-                        } else {
-                            cancelButton.text = "Annuler"
-                            cancelButton.isEnabled = true
-                            cancelButton.visibility = View.VISIBLE
+                        cancelButton.visibility = if (isCanceled) View.GONE else View.VISIBLE
+
+                        cancelButton.setOnClickListener {
+                            val dbHelper = DbUtil(this@Historique)
+                            val reservation = reservations[position]  // Récupère la vraie réservation
+
+                            val success = dbHelper.cancelReservation(reservation.id)
+                            if (success) {
+                                item["status_part"] = "Annulée"
+                                item["is_canceled"] = true
+
+                                // Met à jour les vues
+                                val newFullText = "Statut : Annulée"
+                                val newSpannable = SpannableString(newFullText)
+                                val newColor = ContextCompat.getColor(this@Historique, R.color.error_red)
+                                newSpannable.setSpan(
+                                    ForegroundColorSpan(newColor),
+                                    "Statut : ".length,
+                                    newFullText.length,
+                                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                )
+                                statusText.text = newSpannable
+                                cancelButton.visibility = View.GONE
+                            } else {
+                                Toast.makeText(this@Historique, "Erreur lors de l'annulation", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }
@@ -142,6 +160,13 @@ class Historique : AppCompatActivity() {
                 override fun onChildViewDetachedFromWindow(view: View) {}
             })
         }
+        val homeBtn = findViewById<ImageView>(R.id.homeBtn)
+        homeBtn.setOnClickListener {
+            val intent = Intent(this@Historique, MainActivity::class.java)
+            startActivity(intent)
+            finish() // Facultatif : ferme l'activité actuelle si tu ne veux pas revenir avec le bouton "back"
+        }
+
     }
 
     private fun formatDateForDisplay(date: Date): String {

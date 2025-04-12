@@ -129,7 +129,7 @@ class Voyage : AppCompatActivity() {
                 put(ReservationContract.Colonnes.TRAVEL_DATE, selectedDate)
                 put(ReservationContract.Colonnes.PASSENGER_COUNT, selectedPeople)
                 put(ReservationContract.Colonnes.PRICE, priceValue)
-                put(ReservationContract.Colonnes.STATUS, "Réservé")
+                put(ReservationContract.Colonnes.STATUS, "Confirmée")
                 // BOOKING_DATE is auto-filled with datetime('now')
             }
 
