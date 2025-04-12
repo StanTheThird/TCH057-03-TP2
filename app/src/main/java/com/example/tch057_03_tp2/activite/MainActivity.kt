@@ -1,16 +1,16 @@
 package com.example.tch057_03_tp2.activite
 
-import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.widget.*
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import java.text.SimpleDateFormat
-import java.util.Locale
 import com.example.tch057_03_tp2.R
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var voyages: List<VoyageRepository.Voyage>
     private var filteredVoyages: List<VoyageRepository.Voyage> = listOf()
 
-    @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -43,6 +42,13 @@ class MainActivity : AppCompatActivity() {
         // Set up filter button
         val filterButton: LinearLayout = findViewById(R.id.filterButtonContainer)
         filterButton.setOnClickListener { showFilterOverlay() }
+
+        // Set up reservation button
+        val reservationBtn: LinearLayout = findViewById(R.id.reservation_btn)
+        reservationBtn.setOnClickListener {
+            val intent = Intent(this, Historique::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun showFilterOverlay() {
@@ -96,23 +102,30 @@ class MainActivity : AppCompatActivity() {
         val dateFormatter = SimpleDateFormat("dd MMMM", Locale.getDefault())
 
         filteredVoyages = voyages.filter { voyage ->
-            // Match destination
             val matchesDestination = destination == "All" || voyage.title.contains(destination, ignoreCase = true)
-
-            // Match price
             val priceValue = voyage.price.replace("$", "").replace(",", "").toIntOrNull() ?: 0
             val matchesPrice = (priceMin == null || priceValue >= priceMin) &&
                     (priceMax == null || priceValue <= priceMax)
-
-            // Match type
             val matchesType = type == "All" || voyage.description.contains(type, ignoreCase = true)
+            val startDate = try {
+                if (dateStart.isNotEmpty()) dateFormatter.parse(dateStart) else null
+            } catch (e: ParseException) {
+                null
+            }
+            val endDate = try {
+                if (dateEnd.isNotEmpty()) dateFormatter.parse(dateEnd) else null
+            } catch (e: ParseException) {
+                null
+            }
 
-            // Match date range
-            val startDate = if (dateStart.isNotEmpty()) dateFormatter.parse(dateStart) else null
-            val endDate = if (dateEnd.isNotEmpty()) dateFormatter.parse(dateEnd) else null
             val matchesDate = voyage.possibleDates.any { possibleDate ->
-                val parsedDate = dateFormatter.parse(possibleDate)
-                (startDate == null || parsedDate >= startDate) &&
+                val parsedDate = try {
+                    dateFormatter.parse(possibleDate)
+                } catch (e: ParseException) {
+                    null
+                }
+                parsedDate != null &&
+                        (startDate == null || parsedDate >= startDate) &&
                         (endDate == null || parsedDate <= endDate)
             }
 
@@ -123,7 +136,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToVoyageDetails(voyage: VoyageRepository.Voyage) {
-        // Code to navigate to VoyageActivity with voyage details
+        val intent = Intent(this, Voyage::class.java).apply {
+            putExtra("voyageId", voyage.id)
+        }
+        startActivity(intent)
     }
 
     private fun mapVoyagesToAdapterData(voyages: List<VoyageRepository.Voyage>): List<Map<String, Any>> {
@@ -135,32 +151,5 @@ class MainActivity : AppCompatActivity() {
                 "description" to voyage.description
             )
         }
-
-        // Find the LinearLayout you want to make clickable
-        val reservationBtn = findViewById<LinearLayout>(R.id.reservation_btn)
-
-        // Set click listener
-        reservationBtn.setOnClickListener {
-            // Create an Intent to start the HistoriqueActivity
-            val intent = Intent(this, Historique::class.java)
-            startActivity(intent)
-        }
-
-        // Set up RecyclerView with GenericAdapter
-        val recyclerView: RecyclerView = findViewById(R.id.listVoyage)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = GenericAdapter(
-            context = this,
-            layoutId = R.layout.item_voyage, // Specify the layout for list items
-            items = voyageData,
-            onItemClick = { position ->
-                // Pass only the voyage ID to VoyageActivity
-                val selectedVoyage = voyages[position]
-                val intent = Intent(this, Voyage::class.java).apply {
-                    putExtra("voyageId", selectedVoyage.id) // Pass the ID
-                }
-                startActivity(intent)
-            }
-        )
     }
 }

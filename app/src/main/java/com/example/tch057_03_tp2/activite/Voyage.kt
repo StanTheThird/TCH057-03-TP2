@@ -1,10 +1,11 @@
-package com.example.tch057_03_tp2
+package com.example.tch057_03_tp2.activite
 
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.tch057_03_tp2.R
 
 class Voyage : AppCompatActivity() {
 
@@ -40,7 +41,7 @@ class Voyage : AppCompatActivity() {
         val reserveButton: Button = findViewById(R.id.bookButton)
 
         titleView.text = voyage.title
-        subtitleView.text = "Voyage vers"
+        subtitleView.text = "Voyage vers ${voyage.title}"
         descriptionView.text = voyage.description
         durationView.text = "Durée : ${voyage.duree}"
         remainingPlacesView.text = "Places restantes : ${voyage.placesRestantes}"
