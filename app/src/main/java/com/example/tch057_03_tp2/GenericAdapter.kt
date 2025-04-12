@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 class GenericAdapter(
-    private val context: Context,
-    private val layoutId: Int, // Layout resource for list item
-    private val items: List<Map<String, Any>>, // List of data maps for each list item
-    private val onItemClick: (position: Int) -> Unit // Lambda for item click handling
+    private var context: Context,
+    private var layoutId: Int,
+    private var items: List<Map<String, Any>>,
+    private var onItemClick: (Int) -> Unit
 ) : RecyclerView.Adapter<GenericAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -47,6 +47,11 @@ class GenericAdapter(
         holder.itemView.setOnClickListener {
             onItemClick(position)
         }
+    }
+
+    fun updateItems(newItems: List<Map<String, Any>>) {
+        this.items = newItems
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = items.size

@@ -25,9 +25,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Top LinearLayout for User Info -->
-
-    <!-- Filters Button -->
-
     <LinearLayout
         android:id="@+id/linearLayout5"
         android:layout_width="0dp"
@@ -109,34 +106,51 @@
                     android:textSize="20sp" />
             </LinearLayout>
         </LinearLayout>
-
-        <!-- Right Section: Réservations + Counter -->
     </LinearLayout>
 
+    <!-- Filter Button -->
     <LinearLayout
-        android:id="@+id/linearLayout4"
+        android:id="@+id/filterButtonContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginBottom="24dp"
+        android:layout_margin="16dp"
         android:background="@drawable/blue_rounded_frame_360"
         android:gravity="center_vertical"
-        android:paddingLeft="50dp"
-        android:paddingTop="20dp"
-        android:paddingRight="50dp"
-        android:paddingBottom="20dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/filtres_btn_text"
+            android:id="@+id/filterButtonText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/adlamdisplay_regular"
+            android:text="Choisir vos"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:fontFamily="@font/adlamdisplay_regular" />
+
+        <TextView
+            android:id="@+id/filterButtonTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Filtres"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/adlamdisplay_regular" />
+
+        <ImageView
+            android:id="@+id/filterIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_search"
+            app:tint="@android:color/white" />
     </LinearLayout>
 
     <!-- RecyclerView for the List -->
@@ -148,7 +162,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+        app:layout_constraintBottom_toTopOf="@+id/filterButtonContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
