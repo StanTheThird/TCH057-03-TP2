@@ -21,40 +21,66 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        voyageRepository = VoyageRepository()
-        voyages = voyageRepository.fetchVoyages()
-        filteredVoyages = voyages
+        // Vérification de la connexion
+        val sharedPref = getSharedPreferences("VoyageVoyagePrefs", MODE_PRIVATE)
+        val utilisateurConnecte = sharedPref.getBoolean("connecte", false)
 
-        //val nbReservationText: TextView = findViewById(R.id.nb_reservation_text)
-        //val dbHelper = DbUtil(this)
-        //val reservationCount = dbHelper.getReservationCount()
-        //nbReservationText.text = reservationCount.toString()
-
-
-        // Set up RecyclerView
-        recyclerView = findViewById(R.id.listVoyage)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = GenericAdapter(
-            context = this,
-            layoutId = R.layout.item_voyage,
-            items = mapVoyagesToAdapterData(filteredVoyages),
-            onItemClick = { position -> navigateToVoyageDetails(filteredVoyages[position]) }
-        )
-        recyclerView.adapter = adapter
-
-        // Set up filter button
-        val filterButton: LinearLayout = findViewById(R.id.filterButtonContainer)
-        filterButton.setOnClickListener { showFilterOverlay() }
-
-        // Set up reservation button
-        val reservationBtn: LinearLayout = findViewById(R.id.reservation_btn)
-        reservationBtn.setOnClickListener {
-            val intent = Intent(this, Historique::class.java)
+        if (!utilisateurConnecte) {
+            // Redirection vers l'écran de connexion
+            val intent = Intent(this, Connexion::class.java)
             startActivity(intent)
+            finish() // Terminer l'activité actuelle pour éviter le retour en arrière
+        } else {
+            setContentView(R.layout.activity_main)
+
+            // Récupérer le nom de l'utilisateur
+            val nomUtilisateur = sharedPref.getString("nom_utilisateur", "Utilisateur")
+
+            // Mettre à jour le TextView
+            val nomUtilisateurText = findViewById<TextView>(R.id.nom_utilisateur_text)
+            nomUtilisateurText.text = nomUtilisateur
+
+            voyageRepository = VoyageRepository()
+            voyages = voyageRepository.fetchVoyages()
+            filteredVoyages = voyages
+
+            // Set up RecyclerView
+            recyclerView = findViewById(R.id.listVoyage)
+            recyclerView.layoutManager = LinearLayoutManager(this)
+            adapter = GenericAdapter(
+                context = this,
+                layoutId = R.layout.item_voyage,
+                items = mapVoyagesToAdapterData(filteredVoyages),
+                onItemClick = { position -> navigateToVoyageDetails(filteredVoyages[position]) }
+            )
+            recyclerView.adapter = adapter
+
+            // Set up filter button
+            val filterButton: LinearLayout = findViewById(R.id.filterButtonContainer)
+            filterButton.setOnClickListener { showFilterOverlay() }
+
+            // Set up reservation button
+            val reservationBtn: LinearLayout = findViewById(R.id.reservation_btn)
+            reservationBtn.setOnClickListener {
+                val intent = Intent(this, Historique::class.java)
+                startActivity(intent)
+            }
+
+            val deconnexionBtn: Button = findViewById(R.id.deconnexion_btn)
+            deconnexionBtn.setOnClickListener {
+                val editor = sharedPref.edit()
+                editor.clear() // ou remove("connecte") + remove("nom_utilisateur")
+                editor.apply()
+
+                val intent = Intent(this, Connexion::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+            }
         }
-    }
+
+}
 
     private fun showFilterOverlay() {
         val filterDialog = BottomSheetDialog(this)

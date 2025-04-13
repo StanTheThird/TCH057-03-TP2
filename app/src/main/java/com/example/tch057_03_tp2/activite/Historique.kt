@@ -28,6 +28,14 @@ class Historique : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_historique)
 
+        val sharedPref = getSharedPreferences("VoyageVoyagePrefs", MODE_PRIVATE)
+        val nomUtilisateur = sharedPref.getString("nom_utilisateur", "Utilisateur")
+
+        // Mettre à jour le TextView
+        val nomUtilisateurText = findViewById<TextView>(R.id.nom_utilisateur_text)
+        nomUtilisateurText.text = nomUtilisateur
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)

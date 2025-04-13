@@ -111,6 +111,16 @@
                     android:textSize="20sp" />
             </LinearLayout>
         </LinearLayout>
+        <Button
+            android:id="@+id/deconnexion_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Déconnexion"
+            android:textColor="@color/white"
+            android:background="@drawable/blue_rounded_frame_360"
+            android:layout_marginStart="16dp"
+            android:padding="@dimen/normal_padding"
+            android:fontFamily="@font/adlamdisplay_regular"/>
     </LinearLayout>
 
     <!-- Filter Button -->

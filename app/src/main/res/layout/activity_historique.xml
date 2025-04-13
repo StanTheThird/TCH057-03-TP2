@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/negative_padding"
                 android:fontFamily="@font/abeezee_regular"
-                android:text="Historique de"
+                android:text="Réservations de"
                 android:textColor="@color/white_50"
                 android:textSize="14sp" />
 
