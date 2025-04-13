@@ -13,32 +13,6 @@ data class EntiteVoyage(
     var imageUrl: String = "",
     var datesDisponibles: Map<Long, Int> = emptyMap() // Utilise une map pour savoir le nombre de place selon la date. Nécéssiteras probablement des changements dans MainActivity
 ) {
-    // Explicit getters for all properties
-    fun getId(): Int = id
-    fun getPays(): String = pays
-    fun getDestination(): String = destination
-    fun getDescription(): String = description
-    fun getType(): String = type
-    fun getDuree(): String = duree
-    fun getPrix(): Double = prix
-    fun getImageUrl(): String = imageUrl
-    fun getDatesDisponibles(): Map<Long, Int> = datesDisponibles
-
-    // Custom mutators with validation
-    fun setPrix(value: Double) {
-        if (value < 0) {
-            throw IllegalArgumentException("Le prix ne peut pas être négatif")
-        }
-        prix = value
-    }
-
-    fun setPlacesForDate(date: Long, places: Int) {
-        if (places < 0) {
-            throw IllegalArgumentException("Le nombre de places ne peut pas être négatif")
-        }
-        datesDisponibles = datesDisponibles.toMutableMap().apply { put(date, places) }
-    }
-
     // Helper methods
     fun getPrixFormatted(): String = "%.2f$".format(prix)
 

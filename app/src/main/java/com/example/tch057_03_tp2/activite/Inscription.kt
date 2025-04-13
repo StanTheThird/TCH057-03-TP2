@@ -3,19 +3,28 @@ package com.example.tch057_03_tp2.activite
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tch057_03_tp2.R
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import com.example.tch057_03_tp2.modele.EntiteCompteUtilisateur
+import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+import java.io.IOException
 
 class Inscription : AppCompatActivity() {
 
-    // Liste fictive d’emails existants
-    private val fakeUserList = mutableListOf("alice@example.com", "bob@example.com")
+    private val client = OkHttpClient()
+    private val JSON = "application/json; charset=utf-8".toMediaType()
+    private val URL = "http://10.0.2.2:3000/" // Use 10.0.2.2 for Android emulator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,13 +43,13 @@ class Inscription : AppCompatActivity() {
             val nom = nomInput.text.toString().trim()
             val prenom = prenomInput.text.toString().trim()
             val email = emailInput.text.toString().trim()
-            val age = ageInput.text.toString().trim()
+            val age = ageInput.text.toString().trim().toIntOrNull() ?: 0
             val phone = phoneInput.text.toString().trim()
             val address = addressInput.text.toString().trim()
             val password = passwordInput.text.toString().trim()
 
-            // Vérifications
-            if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty() || age.isEmpty() ||
+            // Validation
+            if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty() || ageInput.text.toString().isEmpty() ||
                 phone.isEmpty() || address.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Veuillez remplir tous les champs.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -51,13 +60,8 @@ class Inscription : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (fakeUserList.contains(email)) {
-                Toast.makeText(this, "Cet email est déjà utilisé.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            if (age.toIntOrNull() == null || age.toInt() < 10) {
-                Toast.makeText(this, "Âge invalide.", Toast.LENGTH_SHORT).show()
+            if (age < 16) {
+                Toast.makeText(this, "Âge doit être supérieur à 16.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -66,14 +70,65 @@ class Inscription : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // On considère le compte créé
-            fakeUserList.add(email)
-            Toast.makeText(this, "Compte créé avec succès !", Toast.LENGTH_SHORT).show()
+            // Check if email exists and create account
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    // Check if email exists
+                    val checkRequest = Request.Builder()
+                        .url("${URL}comptes?email=$email")
+                        .build()
 
-            // Redirection vers Connexion
-            val intent = Intent(this, Connexion::class.java)
-            startActivity(intent)
-            finish()
+                    val checkResponse = client.newCall(checkRequest).execute()
+                    if (checkResponse.isSuccessful) {
+                        val json = checkResponse.body?.string()
+                        val comptes = Gson().fromJson(json, Array<EntiteCompteUtilisateur>::class.java)
+
+                        if (comptes.isNotEmpty()) {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(this@Inscription, "Cet email est déjà utilisé.", Toast.LENGTH_SHORT).show()
+                            }
+                            return@launch
+                        }
+                    }
+
+                    // Create new account
+                    val newCompte = EntiteCompteUtilisateur(
+                        nom = nom,
+                        prenom = prenom,
+                        email = email,
+                        age = age,
+                        telephone = phone,
+                        adresse = address,
+                        motDePasse = password
+                    )
+
+                    val json = Gson().toJson(newCompte)
+                    val body = json.toRequestBody(JSON)
+
+                    val request = Request.Builder()
+                        .url("${URL}comptes")
+                        .post(body)
+                        .build()
+
+                    val response = client.newCall(request).execute()
+
+                    if (response.isSuccessful) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@Inscription, "Compte créé avec succès !", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this@Inscription, Connexion::class.java))
+                            finish()
+                        }
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@Inscription, "Erreur lors de la création du compte.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: IOException) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@Inscription, "Erreur de connexion au serveur.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
     }
 }

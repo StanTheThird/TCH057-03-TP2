@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
+    implementation("com.google.code.gson:gson:2.12.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     // Add Glide for image loading
