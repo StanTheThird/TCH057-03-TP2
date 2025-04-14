@@ -124,7 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10sp"
-        android:background="@drawable/blue_rounded_frame_360"
+        android:background="@android:color/transparent"
         android:text="S'inscrire"
         android:textColor="@color/white"
         android:textSize="18sp"

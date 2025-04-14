@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/bright_blue"
+    android:background="@drawable/blue_rounded_frame_10"
     android:padding="16dp">
 
     <LinearLayout
@@ -11,45 +11,64 @@
         android:orientation="vertical">
 
         <!-- Title -->
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
             android:paddingBottom="8dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Choisir vos"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:textSize="18sp" />
-
-            <TextView
+            <!-- LinearLayout pour les TextViews empilés verticalement -->
+            <LinearLayout
+                android:id="@+id/text_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Filtres"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:textSize="18sp" />
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choisir vos"
+                    android:textColor="@color/white_50"
+                    android:fontFamily="@font/abeezee_regular"
+                    android:layout_marginBottom="@dimen/negative_padding"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Filtres"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/adlamdisplay_regular"
+                    android:textStyle="bold"
+                    android:textSize="30sp" />
+            </LinearLayout>
+
+            <!-- ImageButton à droite -->
             <ImageButton
+                android:id="@+id/search_filter_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@android:drawable/ic_menu_search"
                 app:tint="@android:color/white"
-                android:contentDescription="Search filters" />
-        </LinearLayout>
+                android:contentDescription="Search filters"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Country -->
         <TextView
             android:layout_width="wrap_content"
+            android:fontFamily="@font/adlamdisplay_regular"
             android:layout_height="wrap_content"
             android:text="Pays"
             android:textColor="@android:color/white"
+            android:textSize="18dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="4dp" />
 
@@ -57,14 +76,16 @@
             android:id="@+id/spinnerCountry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/spinner_background"
+            style="@style/SpinnerStyle"
             android:padding="8dp" />
 
         <!-- Price -->
         <TextView
             android:layout_width="wrap_content"
+            android:fontFamily="@font/adlamdisplay_regular"
             android:layout_height="wrap_content"
             android:text="Prix"
+            android:textSize="18dp"
             android:textColor="@android:color/white"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="4dp" />
@@ -80,7 +101,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="Minimum"
-                android:background="@drawable/edittext_background"
+                android:textColorHint="@color/white"
+                android:fontFamily="@font/abeezee_regular"
+                android:textSize="16sp"
+                android:background="@drawable/black_rounded_frame_360"
                 android:padding="8dp"
                 android:inputType="number"
                 android:textColor="@android:color/white" />
@@ -95,7 +119,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="Maximum"
-                android:background="@drawable/edittext_background"
+                android:textColorHint="@color/white"
+                android:textSize="16sp"
+                android:fontFamily="@font/abeezee_regular"
+                android:background="@drawable/black_rounded_frame_360"
                 android:padding="8dp"
                 android:inputType="number"
                 android:textColor="@android:color/white" />
@@ -105,7 +132,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/adlamdisplay_regular"
             android:text="Type de voyage"
+            android:textSize="18dp"
             android:textColor="@android:color/white"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="4dp" />
@@ -114,16 +143,18 @@
             android:id="@+id/spinnerType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/spinner_background"
+            style="@style/SpinnerStyle"
             android:padding="8dp" />
 
         <!-- Date Range -->
         <TextView
             android:layout_width="wrap_content"
+            android:fontFamily="@font/adlamdisplay_regular"
             android:layout_height="wrap_content"
             android:text="Date de départ"
             android:textColor="@android:color/white"
             android:layout_marginTop="8dp"
+            android:textSize="18dp"
             android:layout_marginBottom="4dp" />
 
         <LinearLayout
@@ -136,7 +167,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/spinner_background"
+                style="@style/SpinnerStyle"
                 android:padding="8dp" />
 
             <View
@@ -148,14 +179,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/spinner_background"
+                style="@style/SpinnerStyle"
                 android:padding="8dp" />
         </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/adlamdisplay_regular"
             android:text="Date de retour"
+            android:textSize="18dp"
             android:textColor="@android:color/white"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="4dp" />
@@ -170,7 +203,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/spinner_background"
+                style="@style/SpinnerStyle"
                 android:padding="8dp" />
 
             <View
@@ -182,7 +215,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/spinner_background"
+                style="@style/SpinnerStyle"
                 android:padding="8dp" />
         </LinearLayout>
 
@@ -191,7 +224,9 @@
             android:id="@+id/buttonApplyFilters"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/adlamdisplay_regular"
             android:text="Appliquer les filtres"
+            android:textSize="16dp"
             android:backgroundTint="@android:color/white"
             android:textColor="@color/bright_blue"
             android:layout_marginTop="16dp" />

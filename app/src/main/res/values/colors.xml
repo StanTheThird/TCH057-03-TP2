@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="dark_blue">#060638</color>
 
+    <color name="black_10">#1A000000</color>
     <color name="white_10">#1AFFFFFF</color>
     <color name="white_50">#80FFFFFF</color>
 
@@ -12,13 +13,4 @@
 
     <color name="success_green">#24B24C</color>
     <color name="error_red">#B22424</color>
-
-    <color name="darker_blue">#1E1E60</color>
-
-    <!-- Button Colors -->
-    <color name="vivid_blue">#3F51B5</color>
-
-    <!-- Text Colors -->
-    <color name="light_bluish_gray">#B0B0FF</color>
-    <color name="soft_lavender">#CCCCFF</color>
 </resources>

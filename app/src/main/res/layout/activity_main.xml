@@ -24,7 +24,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- User Info Section -->
     <LinearLayout
         android:id="@+id/linearLayout5"
         android:layout_width="0dp"
@@ -36,15 +35,14 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="@dimen/normal_padding"
-        android:weightSum="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_name_text">
 
-        <!-- Left Section: Bonjour + Nom utilisateur -->
+        <!-- Left Section (Stays Left-Aligned) -->
         <LinearLayout
             android:id="@+id/left_section"
-            android:layout_width="145dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -68,19 +66,21 @@
                 android:textSize="18sp" />
         </LinearLayout>
 
-        <!-- Right Section: Réservations + Counter -->
+        <!-- Middle Section (Takes remaining space) -->
+
+        <!-- Right Button (Pushed to the End) -->
         <LinearLayout
             android:id="@+id/reservation_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/white_rounded_frame_360"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
             android:clickable="true"
             android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:orientation="horizontal"
             android:paddingStart="@dimen/large_padding"
             android:paddingTop="@dimen/normal_padding"
-            android:paddingEnd="@dimen/large_padding"
             android:paddingBottom="@dimen/normal_padding">
 
             <TextView
@@ -90,38 +90,36 @@
                 android:fontFamily="@font/adlamdisplay_regular"
                 android:text="Réservations"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/nb_reservation_text"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="@dimen/normal_padding"
                 android:layout_marginEnd="@dimen/normal_padding"
                 android:background="@drawable/blue_rounded_frame_360"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/nb_reservation_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/adlamdisplay_regular"
-                    android:text="2"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
-            </LinearLayout>
+                android:fontFamily="@font/adlamdisplay_regular"
+                android:text="2"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
         </LinearLayout>
-        <Button
-            android:id="@+id/deconnexion_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Déconnexion"
-            android:textColor="@color/white"
-            android:background="@drawable/blue_rounded_frame_360"
-            android:layout_marginStart="16dp"
-            android:padding="@dimen/normal_padding"
-            android:fontFamily="@font/adlamdisplay_regular"/>
-    </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/deconnexion_btn"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
+        android:layout_margin="@dimen/normal_padding"
+        android:background="@drawable/white_rounded_frame_360"
+        android:gravity="center"
+        android:padding="@dimen/normal_padding"
+        android:text="X"
+        android:textAlignment="center"
+        android:fontFamily="@font/adlamdisplay_regular"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+</LinearLayout>
 
     <!-- Filter Button -->
     <LinearLayout
@@ -139,25 +137,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:id="@+id/filterButtonText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Choisir vos"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
-            android:fontFamily="@font/adlamdisplay_regular" />
 
-        <TextView
-            android:id="@+id/filterButtonTitle"
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Filtres"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginStart="4dp"
-            android:fontFamily="@font/adlamdisplay_regular" />
+            android:layout_gravity="clip_horizontal|left">
+
+            <TextView
+                android:id="@+id/filterButtonText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/adlamdisplay_regular"
+                android:text="Choisir vos"
+                android:textColor="@color/white_50"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/filterButtonTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/adlamdisplay_regular"
+                android:text="Filtres"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </FrameLayout>
 
         <ImageView
             android:id="@+id/filterIcon"

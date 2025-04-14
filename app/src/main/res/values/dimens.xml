@@ -3,5 +3,4 @@
     <dimen name="negative_padding">-4dp</dimen>
     <dimen name="normal_padding">8dp</dimen>
     <dimen name="large_padding">14dp</dimen>
-
 </resources>
