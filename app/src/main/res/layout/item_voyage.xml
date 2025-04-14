@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
-    <!-- LinearLayout for additional content -->
     <LinearLayout
         android:id="@+id/versVoyagelayout"
         android:layout_width="wrap_content"
@@ -13,12 +11,6 @@
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Price Text in a rounded frame -->
-
-    <!-- Image with rounded corners -->
-
-    <!-- Description Text below the image -->
 
     <LinearLayout
         android:layout_width="wrap_content"

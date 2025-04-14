@@ -16,7 +16,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/oleoscriptswashcaps_regular"
-        android:text="Voyage Voyage"
+        android:text="@string/voyage_voyage"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="30sp"
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/negative_padding"
                 android:fontFamily="@font/abeezee_regular"
-                android:text="Réservations de"
+                android:text="@string/r_servations_de"
                 android:textColor="@color/white_50"
                 android:textSize="14sp" />
 
@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/adlamdisplay_regular"
-                android:text="Nom utilisateur"
+                android:text="@string/nom_utilisateur"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -79,7 +79,7 @@
 
             <ImageView
                 android:id="@+id/homeBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:srcCompat="@android:drawable/ic_menu_revert" />

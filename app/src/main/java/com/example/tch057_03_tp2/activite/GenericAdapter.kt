@@ -25,7 +25,6 @@ class GenericAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val dataMap = items[position]
 
-        // Dynamically bind data to views
         for ((key, value) in dataMap) {
             val view = holder.itemView.findViewById<View>(
                 context.resources.getIdentifier(key, "id", context.packageName)
@@ -34,7 +33,6 @@ class GenericAdapter(
             when (view) {
                 is TextView -> view.text = value.toString() // Set text for TextView
                 is ImageView -> {
-                    // Load image into ImageView using Glide
                     Glide.with(context)
                         .load(value.toString())
                         .placeholder(R.drawable.placeholder_image) // Optional placeholder
@@ -44,7 +42,6 @@ class GenericAdapter(
             }
         }
 
-        // Set click listener
         holder.itemView.setOnClickListener {
             onItemClick(position)
         }

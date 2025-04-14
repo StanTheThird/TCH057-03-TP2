@@ -14,7 +14,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/oleoscriptswashcaps_regular"
-        android:text="Voyage Voyage"
+        android:text="@string/voyage_voyage"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="30sp"
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/negative_padding"
             android:fontFamily="@font/adlamdisplay_regular"
-            android:text="Bienvenue!"
+            android:text="@string/bienvenue"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="20sp" />
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/adlamdisplay_regular"
-            android:text="Connectez-Vous"
+            android:text="@string/connectez_vous"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="40sp" />
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/negative_padding"
             android:fontFamily="@font/abeezee_regular"
-            android:text="Remplissez les informations suivantes"
+            android:text="@string/remplissez_les_informations_suivantes"
             android:textAlignment="center"
             android:textColor="@color/white_50"
             android:textSize="14sp" />
@@ -69,6 +69,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/continuerBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
@@ -82,11 +83,12 @@
             android:background="@drawable/white_rounded_frame_24_10"
             android:ems="10"
             android:fontFamily="@font/adlamdisplay_regular"
-            android:hint="Courriel"
+            android:hint="@string/courriel"
             android:inputType="textEmailAddress"
             android:padding="@dimen/large_padding"
             android:textColor="@color/white"
-            android:textColorHint="@color/white" />
+            android:textColorHint="@color/white"
+            tools:ignore="VisualLintTextFieldSize" />
 
         <EditText
             android:id="@+id/password_imput"
@@ -96,11 +98,12 @@
             android:background="@drawable/white_rounded_frame_10_24"
             android:ems="10"
             android:fontFamily="@font/adlamdisplay_regular"
-            android:hint="Mot de Passe"
+            android:hint="@string/mot_de_passe"
             android:inputType="textPassword"
             android:padding="@dimen/large_padding"
             android:textColor="@color/white"
-            android:textColorHint="@color/white" />
+            android:textColorHint="@color/white"
+            tools:ignore="VisualLintTextFieldSize" />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -125,7 +128,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10sp"
         android:background="@android:color/transparent"
-        android:text="S'inscrire"
+        android:text="@string/s_inscrire"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:paddingHorizontal="50dp"

@@ -89,7 +89,6 @@ class Inscription : AppCompatActivity() {
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                // Check if email exists
                 val checkRequest = Request.Builder()
                     .url("$URL?email=$email")
                     .build()
@@ -102,9 +101,8 @@ class Inscription : AppCompatActivity() {
                     return@launch
                 }
 
-                // Create new client
                 val newClient = EntiteClient(
-                    id = 0, // Server will assign ID
+                    id = 0,
                     nom = nom,
                     prenom = prenom,
                     email = email,

@@ -29,7 +29,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Choisir vos"
+                    android:text="@string/choisir_vos"
                     android:textColor="@color/white_50"
                     android:fontFamily="@font/abeezee_regular"
                     android:layout_marginBottom="@dimen/negative_padding"
@@ -39,7 +39,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Filtres"
+                    android:text="@string/filtres"
                     android:textColor="@android:color/white"
                     android:fontFamily="@font/adlamdisplay_regular"
                     android:textStyle="bold"
@@ -54,7 +54,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@android:drawable/ic_menu_search"
                 app:tint="@android:color/white"
-                android:contentDescription="Search filters"
+                android:contentDescription="@string/search_filters"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
@@ -66,9 +66,9 @@
             android:layout_width="wrap_content"
             android:fontFamily="@font/adlamdisplay_regular"
             android:layout_height="wrap_content"
-            android:text="Pays"
+            android:text="@string/pays"
             android:textColor="@android:color/white"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="4dp" />
 
@@ -85,8 +85,8 @@
             android:layout_width="wrap_content"
             android:fontFamily="@font/adlamdisplay_regular"
             android:layout_height="wrap_content"
-            android:text="Prix"
-            android:textSize="18dp"
+            android:text="@string/prix"
+            android:textSize="18sp"
             android:textColor="@android:color/white"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="4dp" />
@@ -101,7 +101,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Minimum"
+                android:autofillHints=""
+                android:hint="@string/minimum"
                 android:textColorHint="@color/white"
                 android:fontFamily="@font/abeezee_regular"
                 android:textSize="16sp"
@@ -119,7 +120,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Maximum"
+                android:autofillHints=""
+                android:hint="@string/maximum"
                 android:textColorHint="@color/white"
                 android:textSize="16sp"
                 android:fontFamily="@font/abeezee_regular"
@@ -134,8 +136,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/adlamdisplay_regular"
-            android:text="Type de voyage"
-            android:textSize="18dp"
+            android:text="@string/type_de_voyage"
+            android:textSize="18sp"
             android:textColor="@android:color/white"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="4dp" />
@@ -153,10 +155,10 @@
             android:layout_width="wrap_content"
             android:fontFamily="@font/adlamdisplay_regular"
             android:layout_height="wrap_content"
-            android:text="Date de départ"
+            android:text="@string/date_de_d_part"
             android:textColor="@android:color/white"
             android:layout_marginTop="8dp"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:layout_marginBottom="4dp" />
 
         <LinearLayout
@@ -191,8 +193,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/adlamdisplay_regular"
-            android:text="Date de retour"
-            android:textSize="18dp"
+            android:text="@string/date_de_retour"
+            android:textSize="18sp"
             android:textColor="@android:color/white"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="4dp" />
@@ -231,8 +233,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/adlamdisplay_regular"
-            android:text="Appliquer les filtres"
-            android:textSize="16dp"
+            android:text="@string/appliquer_les_filtres"
+            android:textSize="16sp"
             android:backgroundTint="@android:color/white"
             android:textColor="@color/bright_blue"
             android:layout_marginTop="16dp" />

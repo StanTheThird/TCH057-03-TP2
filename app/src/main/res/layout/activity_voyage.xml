@@ -15,7 +15,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/oleoscriptswashcaps_regular"
-        android:text="Voyage Voyage"
+        android:text="@string/voyage_voyage"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="30sp"
@@ -27,7 +27,7 @@
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="left"
+        android:gravity="start"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_name_text">
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/abeezee_regular"
-            android:text="Voyage vers"
+            android:text="@string/voyage_vers"
             android:textColor="@color/white_50"
             android:textSize="14sp" />
 
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/negative_padding"
             android:fontFamily="@font/adlamdisplay_regular"
-            android:text="Crystal Cove"
+            android:text="@string/crystal_cove"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/abeezee_regular"
-        android:text="Sleep in glowing overwater bungalows snorkel with golden manta rays in this bioluminescent paradise."
+        android:text="@string/description"
         android:textColor="@color/white"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/adlamdisplay_regular"
-        android:text="Durée : 5 jours"
+        android:text="@string/dur_e_5_jours"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:layout_marginTop="16dp"
@@ -113,7 +113,7 @@
                 android:layout_height="40dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/blue_rounded_frame_360"
-                android:text="22 Avril"
+                android:text="@string/_22_avril"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
@@ -123,7 +123,7 @@
                 android:fontFamily="@font/adlamdisplay_regular"
                 android:layout_height="40dp"
                 android:background="@drawable/white_rounded_frame_360"
-                android:text="5 Mai"
+                android:text="@string/_5_mai"
                 android:textColor="@color/white_50"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -154,7 +154,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/adlamdisplay_regular"
-            android:text="Places restantes : 13"
+            android:text="@string/places_restantes_13"
             android:textColor="@color/white"
             android:textSize="14sp"
             android:layout_marginStart="16dp" />
@@ -179,7 +179,7 @@
             android:layout_weight="1"
             android:background="@drawable/blue_rounded_frame_360"
             android:fontFamily="@font/adlamdisplay_regular"
-            android:text="Reserver une place"
+            android:text="@string/reserver_une_place"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -188,7 +188,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/adlamdisplay_regular"
-            android:text="Prix : $4,200"
+            android:text="@string/prix_4_200"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:layout_marginStart="16dp" />

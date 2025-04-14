@@ -27,7 +27,7 @@ import java.util.*
 class Voyage : AppCompatActivity() {
 
     private val client = OkHttpClient()
-    private val URL = "http://10.0.2.2:3000/voyages" // Fixed double slash
+    private val URL = "http://10.0.2.2:3000/voyages"
     private lateinit var dbHelper: DbUtil
     private lateinit var selectedTrip: EntiteVoyage.Trip
     private var selectedPeople: Int = 1
@@ -75,11 +75,9 @@ class Voyage : AppCompatActivity() {
 
                     val gson = Gson()
                     val voyages = try {
-                        // First try parsing as direct array of voyages
                         gson.fromJson(json, Array<EntiteVoyage>::class.java).toList()
                     } catch (e: JsonSyntaxException) {
                         try {
-                            // If that fails, try parsing as object with voyages array
                             data class ApiResponse(val voyages: List<EntiteVoyage>)
                             gson.fromJson(json, ApiResponse::class.java).voyages
                         } catch (e: Exception) {
@@ -142,7 +140,6 @@ class Voyage : AppCompatActivity() {
             .error(R.drawable.error_image)
             .into(imageView)
 
-        // Populate available dates
         val availableTrips = voyage.getAvailableTrips()
         if (availableTrips.isNotEmpty()) {
             dateContainer.removeAllViews()

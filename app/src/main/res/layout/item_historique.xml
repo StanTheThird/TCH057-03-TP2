@@ -1,5 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -25,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/abeezee_italic"
-                android:text="Voyage vers"
+                android:text="@string/voyage_vers"
                 android:textColor="@color/white_50"
                 android:textSize="14sp"
                 android:layout_marginBottom="@dimen/negative_padding"/>
@@ -35,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/adlamdisplay_regular"
-                android:text="Destination"
+                android:text="@string/destination"
                 android:textColor="@color/white"
                 android:textSize="20sp"/>
         </LinearLayout>
@@ -48,7 +49,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:fontFamily="@font/adlamdisplay_regular"
-            android:text="12/12/2024"
+            android:text="@string/_12_12_2024"
             android:textColor="@color/white"
             android:textSize="20sp"/>
     </RelativeLayout>
@@ -70,7 +71,7 @@
             android:fontFamily="@font/adlamdisplay_regular"
             android:paddingHorizontal="@dimen/large_padding"
             android:paddingVertical="@dimen/normal_padding"
-            android:text="Réservé le 02/01/2025"
+            android:text="@string/r_serv_le_02_01_2025"
             android:textColor="@color/white"
             android:textSize="14sp"/>
 
@@ -82,7 +83,7 @@
             android:fontFamily="@font/adlamdisplay_regular"
             android:paddingHorizontal="@dimen/large_padding"
             android:paddingVertical="@dimen/normal_padding"
-            android:text="Prix : 2,800$"
+            android:text="@string/prix_2_800"
             android:textColor="@color/white"
             android:textSize="14sp"/>
     </LinearLayout>
@@ -106,13 +107,14 @@
             android:paddingVertical="@dimen/normal_padding"
             android:text="Statut : Confirmée"
             android:textColor="@color/white"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Annuler"
+            android:text="@string/annuler"
             android:layout_marginStart="24dp"
             android:backgroundTint="@color/bright_blue"
             android:fontFamily="@font/adlamdisplay_regular"

@@ -33,7 +33,6 @@ class DbUtil(context: Context) : SQLiteOpenHelper(
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // Exemple simple : on supprime et on recrée la table (à adapter pour de vraies migrations)
         db.execSQL("DROP TABLE IF EXISTS ${ReservationContract.TABLE_NAME}")
         onCreate(db)
     }
@@ -42,12 +41,12 @@ class DbUtil(context: Context) : SQLiteOpenHelper(
         val db = readableDatabase
         val cursor = db.query(
             ReservationContract.TABLE_NAME,
-            null, // toutes les colonnes
-            null, // pas de WHERE
-            null, // pas d'args WHERE
-            null, // pas de GROUP BY
-            null, // pas de HAVING
-            null  // pas de ORDER BY
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
         )
 
         val reservations = mutableListOf<Reservation>()

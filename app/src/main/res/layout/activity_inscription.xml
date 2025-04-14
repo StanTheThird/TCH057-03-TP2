@@ -14,7 +14,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/oleoscriptswashcaps_regular"
-        android:text="Voyage Voyage"
+        android:text="@string/voyage_voyage"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="30sp"
@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/adlamdisplay_regular"
-            android:text="Inscription"
+            android:text="@string/inscription"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="40sp" />
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/negative_padding"
             android:fontFamily="@font/abeezee_regular"
-            android:text="Remplissez les informations suivantes"
+            android:text="@string/remplissez_les_informations_suivantes"
             android:textAlignment="center"
             android:textColor="@color/white_50"
             android:textSize="14sp" />
@@ -58,6 +58,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/continuerBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
@@ -69,14 +70,16 @@
                 android:id="@+id/nom_imput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:autofillHints=""
                 android:background="@drawable/white_rounded_frame_24_10"
                 android:ems="10"
                 android:fontFamily="@font/adlamdisplay_regular"
-                android:hint="Nom"
+                android:hint="@string/nom"
                 android:inputType="text"
                 android:padding="@dimen/large_padding"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white" />
+                android:textColorHint="@color/white"
+                tools:ignore="VisualLintTextFieldSize" />
 
 
             <EditText
@@ -84,14 +87,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/normal_padding"
+                android:autofillHints=""
                 android:background="@drawable/white_rounded_frame_10"
                 android:ems="10"
                 android:fontFamily="@font/adlamdisplay_regular"
-                android:hint="Prénom"
+                android:hint="@string/pr_nom"
                 android:inputType="text"
                 android:padding="@dimen/large_padding"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white" />
+                android:textColorHint="@color/white"
+                tools:ignore="VisualLintTextFieldSize" />
 
 
             <EditText
@@ -102,25 +107,28 @@
                 android:background="@drawable/white_rounded_frame_10"
                 android:ems="10"
                 android:fontFamily="@font/adlamdisplay_regular"
-                android:hint="Courriel"
+                android:hint="@string/courriel"
                 android:inputType="textEmailAddress"
                 android:padding="@dimen/large_padding"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white" />
+                android:textColorHint="@color/white"
+                tools:ignore="VisualLintTextFieldSize" />
 
             <EditText
                 android:id="@+id/age_imput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/normal_padding"
+                android:autofillHints=""
                 android:background="@drawable/white_rounded_frame_10"
                 android:ems="10"
                 android:fontFamily="@font/adlamdisplay_regular"
-                android:hint="Âge"
+                android:hint="@string/ge"
                 android:inputType="number"
                 android:padding="@dimen/large_padding"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white" />
+                android:textColorHint="@color/white"
+                tools:ignore="VisualLintTextFieldSize" />
 
             <EditText
                 android:id="@+id/phone_imput"
@@ -130,25 +138,28 @@
                 android:background="@drawable/white_rounded_frame_10"
                 android:ems="10"
                 android:fontFamily="@font/adlamdisplay_regular"
-                android:hint="Téléphone"
+                android:hint="@string/t_l_phone"
                 android:inputType="phone"
                 android:padding="@dimen/large_padding"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white" />
+                android:textColorHint="@color/white"
+                tools:ignore="VisualLintTextFieldSize" />
 
             <EditText
                 android:id="@+id/adress_imput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/normal_padding"
+                android:autofillHints=""
                 android:background="@drawable/white_rounded_frame_10"
                 android:ems="10"
                 android:fontFamily="@font/adlamdisplay_regular"
-                android:hint="Adresse"
+                android:hint="@string/adresse"
                 android:inputType="textPostalAddress"
                 android:padding="@dimen/large_padding"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white" />
+                android:textColorHint="@color/white"
+                tools:ignore="VisualLintTextFieldSize" />
 
             <EditText
                 android:id="@+id/password_imput"
@@ -158,11 +169,12 @@
                 android:background="@drawable/white_rounded_frame_10"
                 android:ems="10"
                 android:fontFamily="@font/adlamdisplay_regular"
-                android:hint="Mot de Passe"
+                android:hint="@string/mot_de_passe"
                 android:inputType="textPassword"
                 android:padding="@dimen/large_padding"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white" />
+                android:textColorHint="@color/white"
+                tools:ignore="VisualLintTextFieldSize" />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -173,7 +185,7 @@
         android:background="@drawable/blue_rounded_frame_360"
         android:paddingHorizontal="50dp"
         android:paddingVertical="20dp"
-        android:text="S'inscrire"
+        android:text="@string/s_inscrire"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline1"

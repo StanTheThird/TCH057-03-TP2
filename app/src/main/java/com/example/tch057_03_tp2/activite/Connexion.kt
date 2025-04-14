@@ -20,7 +20,7 @@ import java.io.IOException
 class Connexion : AppCompatActivity() {
 
     private val client = OkHttpClient()
-    private val URL = "http://10.0.2.2:3000/clients" // Endpoint mis à jour
+    private val URL = "http://10.0.2.2:3000/clients" //PEut varier
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +52,7 @@ class Connexion : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val request = Request.Builder()
-                    .url("$URL?email=$email") // Nouveau format de requête
+                    .url("$URL?email=$email")
                     .build()
 
                 val response = client.newCall(request).execute()
@@ -70,7 +70,7 @@ class Connexion : AppCompatActivity() {
 
                         if (clients.isNotEmpty()) {
                             val client = clients[0]
-                            if (client.mdp == password) { // Champ mdp au lieu de motDePasse
+                            if (client.mdp == password) {
                                 saveSessionAndRedirect(
                                     email = email,
                                     fullName = client.getNomComplet()

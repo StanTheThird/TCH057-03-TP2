@@ -44,7 +44,6 @@ data class EntiteVoyage(
         val placesDisponibles: Int
     )
 
-    // ... rest of your helper methods remain the same ...
     fun getPrixFormatted(): String = "%.2f$".format(prix)
 
     fun getDatesFormatted(): List<String> {

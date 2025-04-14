@@ -12,7 +12,6 @@ import com.example.tch057_03_tp2.modele.EntiteVoyage
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,7 +19,6 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.IOException
-import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -85,10 +83,8 @@ class MainActivity : AppCompatActivity() {
 
                     val gson = Gson()
                     voyages = try {
-                        // First try parsing as direct array of voyages
                         gson.fromJson(json, Array<EntiteVoyage>::class.java).toList()
                     } catch (e: JsonSyntaxException) {
-                        // If that fails, try parsing as object with voyages array
                         data class ApiResponse(val voyages: List<EntiteVoyage>)
                         gson.fromJson(json, ApiResponse::class.java).voyages
                     }
