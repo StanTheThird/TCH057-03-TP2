@@ -51,16 +51,6 @@
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/countryText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/abeezee_regular"
-            android:layout_marginTop="@dimen/negative_padding"
-            android:text="Pays : Maldives"
-            android:textColor="@color/white_50"
-            android:textSize="18sp" />
     </LinearLayout>
 
     <ImageView

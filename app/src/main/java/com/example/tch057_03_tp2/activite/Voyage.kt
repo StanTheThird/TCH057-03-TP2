@@ -18,25 +18,27 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
+import com.google.gson.JsonSyntaxException
 import okhttp3.Request
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Voyage : AppCompatActivity() {
 
     private val client = OkHttpClient()
-    private val URL = "http://10.0.2.2:3000//voyages" // Use the same route as MainActivity
-    private lateinit var dbHelper: DbUtil // Declare dbHelper at the class level
-
-    private lateinit var selectedDate: String
+    private val URL = "http://10.0.2.2:3000/voyages" // Fixed double slash
+    private lateinit var dbHelper: DbUtil
+    private lateinit var selectedTrip: EntiteVoyage.Trip
     private var selectedPeople: Int = 1
     private lateinit var priceText: TextView
-    private var basePrice: Double = 1.0
+    private var basePrice: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_voyage)
 
-        dbHelper = DbUtil(this) // Initialize dbHelper here
+        dbHelper = DbUtil(this)
 
         val voyageId = intent.getIntExtra("voyageId", -1)
         Log.d("VoyageActivity", "Received voyageId: $voyageId")
@@ -50,14 +52,13 @@ class Voyage : AppCompatActivity() {
 
         fetchAllVoyages { voyages ->
             val voyage = voyages.find { it.id == voyageId }
-            if (voyage == null) {
-                Log.e("VoyageActivity", "Voyage data is null or not found for ID: $voyageId")
-                Toast.makeText(this, "Erreur: Voyage introuvable.", Toast.LENGTH_SHORT).show()
+            if (voyage == null || voyage.trips.isEmpty()) {
+                Log.e("VoyageActivity", "Voyage data is null or has no available trips")
+                Toast.makeText(this, "Erreur: Voyage introuvable ou aucune date disponible.", Toast.LENGTH_SHORT).show()
                 finish()
                 return@fetchAllVoyages
             }
 
-            // Bind voyage data to views
             bindVoyageData(voyage)
         }
     }
@@ -71,8 +72,21 @@ class Voyage : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val json = response.body?.string()
                     Log.d("VoyageActivity", "Server response: $json")
-                    val voyageType = object : TypeToken<List<EntiteVoyage>>() {}.type
-                    val voyages: List<EntiteVoyage> = Gson().fromJson(json, voyageType)
+
+                    val gson = Gson()
+                    val voyages = try {
+                        // First try parsing as direct array of voyages
+                        gson.fromJson(json, Array<EntiteVoyage>::class.java).toList()
+                    } catch (e: JsonSyntaxException) {
+                        try {
+                            // If that fails, try parsing as object with voyages array
+                            data class ApiResponse(val voyages: List<EntiteVoyage>)
+                            gson.fromJson(json, ApiResponse::class.java).voyages
+                        } catch (e: Exception) {
+                            Log.e("VoyageActivity", "Failed to parse JSON", e)
+                            emptyList()
+                        }
+                    }
 
                     withContext(Dispatchers.Main) {
                         callback(voyages)
@@ -80,14 +94,20 @@ class Voyage : AppCompatActivity() {
                 } else {
                     Log.e("VoyageActivity", "Server error: ${response.code}")
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(this@Voyage, "Erreur lors du chargement des voyages.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@Voyage, "Erreur serveur: ${response.code}", Toast.LENGTH_SHORT).show()
                         callback(emptyList())
                     }
                 }
             } catch (e: IOException) {
-                Log.e("VoyageActivity", "Network error: ${e.localizedMessage}")
+                Log.e("VoyageActivity", "Network error", e)
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@Voyage, "Erreur de connexion au serveur.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@Voyage, "Erreur réseau: ${e.message}", Toast.LENGTH_SHORT).show()
+                    callback(emptyList())
+                }
+            } catch (e: Exception) {
+                Log.e("VoyageActivity", "Unexpected error", e)
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@Voyage, "Erreur inattendue: ${e.message}", Toast.LENGTH_SHORT).show()
                     callback(emptyList())
                 }
             }
@@ -103,15 +123,16 @@ class Voyage : AppCompatActivity() {
         val peopleSelector: Spinner = findViewById(R.id.peopleSelector)
         val remainingPlacesView: TextView = findViewById(R.id.placesRestantesText)
         val reserveButton: Button = findViewById(R.id.bookButton)
-        val countryText: TextView = findViewById(R.id.countryText)
         val placeText: TextView = findViewById(R.id.voyageTitle)
         priceText = findViewById(R.id.voyagePrice)
 
-        countryText.text = "Pays : ${voyage.pays}"
-        placeText.text = voyage.destination
+        placeText.text = voyage.nomVoyage
+        subtitleView.text = voyage.destination
         descriptionView.text = voyage.description
-        durationView.text = "Durée : ${voyage.duree}"
-        remainingPlacesView.text = "Places restantes : ${voyage.getPlacesForDate(voyage.getAvailableDates().first())}"
+        durationView.text = "Durée : ${voyage.dureeJours} jours"
+
+        // Select first available trip by default
+        selectedTrip = voyage.getAvailableTrips().first()
         basePrice = voyage.prix
         updateDisplayedPrice()
 
@@ -121,20 +142,21 @@ class Voyage : AppCompatActivity() {
             .error(R.drawable.error_image)
             .into(imageView)
 
-        // Populate available dates dynamically
-        val availableDates = voyage.getAvailableDates()
-        if (availableDates.isNotEmpty()) {
-            selectedDate = voyage.getDatesFormatted().first() // Default to the first available date
+        // Populate available dates
+        val availableTrips = voyage.getAvailableTrips()
+        if (availableTrips.isNotEmpty()) {
             dateContainer.removeAllViews()
-            for (date in voyage.getDatesFormatted()) {
+            for (trip in availableTrips) {
                 val dateButton = Button(this).apply {
-                    text = date
+                    val formattedDate = formatDateString(trip.date)
+                    text = formattedDate
                     setBackgroundResource(R.drawable.white_rounded_frame_360)
                     setTextColor(resources.getColor(R.color.white_50, null))
                     setPadding(16, 8, 16, 8)
                     textSize = 14f
                     setOnClickListener {
-                        selectedDate = date
+                        selectedTrip = trip
+                        remainingPlacesView.text = "Places restantes : ${trip.placesDisponibles}"
 
                         // Update button states
                         for (i in 0 until dateContainer.childCount) {
@@ -146,51 +168,32 @@ class Voyage : AppCompatActivity() {
                         }
                         setBackgroundResource(R.drawable.blue_rounded_frame_360)
                         setTextColor(resources.getColor(R.color.white, null))
+
+                        // Update people selector
+                        updatePeopleSelector(peopleSelector, trip.placesDisponibles)
                     }
                 }
-                if (date == selectedDate) {
+                if (trip == selectedTrip) {
                     dateButton.setBackgroundResource(R.drawable.blue_rounded_frame_360)
                     dateButton.setTextColor(resources.getColor(R.color.white, null))
                 }
                 dateContainer.addView(dateButton)
             }
+
+            remainingPlacesView.text = "Places restantes : ${selectedTrip.placesDisponibles}"
+            updatePeopleSelector(peopleSelector, selectedTrip.placesDisponibles)
         }
 
-        // Populate the Spinner for the number of people
-        val maxPlaces = voyage.getPlacesForDate(availableDates.first()) // Use the first available date
-        val peopleOptions = (1..maxPlaces).toList()
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, peopleOptions)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        peopleSelector.adapter = adapter
-
-        peopleSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                selectedPeople = peopleOptions[position]
-                updateDisplayedPrice()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                selectedPeople = 1
-                updateDisplayedPrice()
-            }
-        }
-
-        // Set up the reserve button
         reserveButton.setOnClickListener {
             val db = dbHelper.writableDatabase
-
-            // Extract price from the displayed text (removing all non-numeric characters)
-            val priceValue = priceText.text.toString()
-                .replace("Prix : ", "")
-                .replace("$", "")
-                .replace(",", "")
-                .toDouble()
+            val totalPrice = basePrice * selectedPeople
 
             val values = ContentValues().apply {
                 put(ReservationContract.Colonnes.VOYAGE_ID, voyage.id)
-                put(ReservationContract.Colonnes.TRAVEL_DATE, selectedDate)
+                put(ReservationContract.Colonnes.DESTINATION, voyage.destination)
+                put(ReservationContract.Colonnes.TRAVEL_DATE, selectedTrip.date)
+                put(ReservationContract.Colonnes.PRICE, totalPrice)
                 put(ReservationContract.Colonnes.PASSENGER_COUNT, selectedPeople)
-                put(ReservationContract.Colonnes.PRICE, priceValue)
                 put(ReservationContract.Colonnes.STATUS, "Confirmée")
             }
 
@@ -204,8 +207,34 @@ class Voyage : AppCompatActivity() {
         }
     }
 
+    private fun updatePeopleSelector(spinner: Spinner, maxPlaces: Int) {
+        val peopleOptions = (1..maxPlaces).toList()
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, peopleOptions)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                selectedPeople = peopleOptions[position]
+                updateDisplayedPrice()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                selectedPeople = 1
+                updateDisplayedPrice()
+            }
+        }
+    }
+
     private fun updateDisplayedPrice() {
         val totalPrice = basePrice * selectedPeople
         priceText.text = "Prix : ${String.format("%,.0f", totalPrice)}$"
+    }
+
+    private fun formatDateString(dateString: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val date = inputFormat.parse(dateString) ?: return dateString
+        return outputFormat.format(date)
     }
 }

@@ -8,7 +8,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tch057_03_tp2.R
-import com.example.tch057_03_tp2.modele.EntiteCompteUtilisateur
+import com.example.tch057_03_tp2.modele.EntiteClient
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +23,7 @@ class Inscription : AppCompatActivity() {
 
     private val client = OkHttpClient()
     private val JSON = "application/json; charset=utf-8".toMediaType()
-    private val URL = "http://10.0.2.2:3000/" // Use 10.0.2.2 for Android emulator
+    private val URL = "http://10.0.2.2:3000/clients" // Updated endpoint
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,70 +69,83 @@ class Inscription : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Check if email exists and create account
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    // Fetch all existing users to determine the next ID
-                    val fetchRequest = Request.Builder()
-                        .url("${URL}comptes")
-                        .build()
+            if (password.length < 6) {
+                Toast.makeText(this, "Le mot de passe doit contenir au moins 6 caractères.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
-                    val fetchResponse = client.newCall(fetchRequest).execute()
-                    val comptes = if (fetchResponse.isSuccessful) {
-                        val json = fetchResponse.body?.string()
-                        Gson().fromJson(json, Array<EntiteCompteUtilisateur>::class.java).toList()
-                    } else {
-                        emptyList()
-                    }
+            registerClient(nom, prenom, email, age, phone, address, password)
+        }
+    }
 
-                    // Check if email already exists
-                    if (comptes.any { it.email == email }) {
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(this@Inscription, "Cet email est déjà utilisé.", Toast.LENGTH_SHORT).show()
-                        }
-                        return@launch
-                    }
+    private fun registerClient(
+        nom: String,
+        prenom: String,
+        email: String,
+        age: Int,
+        phone: String,
+        address: String,
+        password: String
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                // Check if email exists
+                val checkRequest = Request.Builder()
+                    .url("$URL?email=$email")
+                    .build()
 
-                    // Determine the next ID
-                    val nextId = (comptes.maxOfOrNull { it.id } ?: 0) + 1
-
-                    // Create new account
-                    val newCompte = EntiteCompteUtilisateur(
-                        id = nextId,
-                        nom = nom,
-                        prenom = prenom,
-                        email = email,
-                        age = age,
-                        telephone = phone,
-                        adresse = address,
-                        motDePasse = password
-                    )
-
-                    val json = Gson().toJson(newCompte)
-                    val body = json.toRequestBody(JSON)
-
-                    val createRequest = Request.Builder()
-                        .url("${URL}comptes")
-                        .post(body)
-                        .build()
-
-                    val createResponse = client.newCall(createRequest).execute()
-
-                    if (createResponse.isSuccessful) {
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(this@Inscription, "Compte créé avec succès !", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this@Inscription, Connexion::class.java))
-                            finish()
-                        }
-                    } else {
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(this@Inscription, "Erreur lors de la création du compte.", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                } catch (e: IOException) {
+                val checkResponse = client.newCall(checkRequest).execute()
+                if (checkResponse.isSuccessful && checkResponse.body?.string()?.isNotEmpty() == true) {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(this@Inscription, "Erreur de connexion au serveur.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@Inscription, "Cet email est déjà utilisé.", Toast.LENGTH_SHORT).show()
                     }
+                    return@launch
+                }
+
+                // Create new client
+                val newClient = EntiteClient(
+                    id = 0, // Server will assign ID
+                    nom = nom,
+                    prenom = prenom,
+                    email = email,
+                    mdp = password,
+                    age = age,
+                    telephone = phone,
+                    adresse = address
+                )
+
+                val json = Gson().toJson(newClient)
+                val body = json.toRequestBody(JSON)
+
+                val createRequest = Request.Builder()
+                    .url(URL)
+                    .post(body)
+                    .build()
+
+                val createResponse = client.newCall(createRequest).execute()
+
+                if (createResponse.isSuccessful) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@Inscription, "Compte créé avec succès!", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this@Inscription, Connexion::class.java))
+                        finish()
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            this@Inscription,
+                            "Erreur lors de la création: ${createResponse.code}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } catch (e: IOException) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        this@Inscription,
+                        "Erreur de connexion: ${e.localizedMessage}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

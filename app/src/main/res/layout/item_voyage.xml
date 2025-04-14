@@ -69,14 +69,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="parent" />
 
-    <!-- Destination Name Text -->
-
-    <!-- Country -->
-
-    <!-- Place -->
-
-    <!-- Subtitle Text for "Voyage Vers" -->
-
     <TextView
         android:id="@+id/countryText"
         android:layout_width="wrap_content"
@@ -90,18 +82,14 @@
         tools:text="Pays : Maldives" />
 
     <TextView
-        android:id="@+id/placeText"
-        android:layout_width="0dp"
+        android:id="@+id/voyageTitle"
+        android:layout_width="wrap_content"
         android:layout_height="28dp"
-        android:layout_marginStart="96dp"
         android:layout_marginTop="44dp"
-        android:layout_marginEnd="96dp"
         android:fontFamily="@font/adlamdisplay_regular"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Lieu : Crystal Cove" />
@@ -119,7 +107,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="versVoyageText" />
 
-    <!-- Additional Description Text -->
     <TextView
         android:id="@+id/description"
         android:layout_width="423dp"

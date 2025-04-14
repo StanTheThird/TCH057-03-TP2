@@ -7,7 +7,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tch057_03_tp2.R
-import com.example.tch057_03_tp2.modele.EntiteCompteUtilisateur
+import com.example.tch057_03_tp2.modele.EntiteClient
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +20,7 @@ import java.io.IOException
 class Connexion : AppCompatActivity() {
 
     private val client = OkHttpClient()
-    private val URL = "http://10.0.2.2:3000/"
+    private val URL = "http://10.0.2.2:3000/clients" // Endpoint mis à jour
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,57 +40,69 @@ class Connexion : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    val request = Request.Builder()
-                        .url("${URL}comptes?email=$email")
-                        .build()
-
-                    val response = client.newCall(request).execute()
-
-                    if (response.isSuccessful) {
-                        val json = response.body?.string()
-                        val comptes = Gson().fromJson(json, Array<EntiteCompteUtilisateur>::class.java)
-
-                        if (comptes.isNotEmpty()) {
-                            val compte = comptes[0]
-                            if (compte.motDePasse == password) {
-                                withContext(Dispatchers.Main) {
-                                    val sharedPref = getSharedPreferences("VoyageVoyagePrefs", MODE_PRIVATE)
-                                    with(sharedPref.edit()) {
-                                        putBoolean("connecte", true)
-                                        putString("email", email)
-                                        putString("nom_utilisateur", compte.getNomComplet())
-                                        apply()
-                                    }
-                                    startActivity(Intent(this@Connexion, MainActivity::class.java))
-                                    finish()
-                                }
-                            } else {
-                                withContext(Dispatchers.Main) {
-                                    Toast.makeText(this@Connexion, "Mot de passe incorrect.", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                        } else {
-                            withContext(Dispatchers.Main) {
-                                Toast.makeText(this@Connexion, "Aucun compte avec cet email.", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    } else {
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(this@Connexion, "Erreur de connexion au serveur.", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                } catch (e: IOException) {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(this@Connexion, "Erreur: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
+            authenticateUser(email, password)
         }
 
         inscrireBtn.setOnClickListener {
             startActivity(Intent(this, Inscription::class.java))
+        }
+    }
+
+    private fun authenticateUser(email: String, password: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val request = Request.Builder()
+                    .url("$URL?email=$email") // Nouveau format de requête
+                    .build()
+
+                val response = client.newCall(request).execute()
+
+                when {
+                    !response.isSuccessful -> {
+                        showToast("Erreur de connexion au serveur: ${response.code}")
+                    }
+                    response.body?.contentLength() == 0L -> {
+                        showToast("Aucun compte avec cet email")
+                    }
+                    else -> {
+                        val json = response.body?.string()
+                        val clients = Gson().fromJson(json, Array<EntiteClient>::class.java)
+
+                        if (clients.isNotEmpty()) {
+                            val client = clients[0]
+                            if (client.mdp == password) { // Champ mdp au lieu de motDePasse
+                                saveSessionAndRedirect(
+                                    email = email,
+                                    fullName = client.getNomComplet()
+                                )
+                            } else {
+                                showToast("Mot de passe incorrect")
+                            }
+                        }
+                    }
+                }
+            } catch (e: IOException) {
+                showToast("Erreur réseau: ${e.localizedMessage}")
+            }
+        }
+    }
+
+    private suspend fun showToast(message: String) {
+        withContext(Dispatchers.Main) {
+            Toast.makeText(this@Connexion, message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private suspend fun saveSessionAndRedirect(email: String, fullName: String) {
+        withContext(Dispatchers.Main) {
+            getSharedPreferences("VoyageVoyagePrefs", MODE_PRIVATE).edit().apply {
+                putBoolean("connecte", true)
+                putString("email", email)
+                putString("nom_utilisateur", fullName)
+                apply()
+            }
+            startActivity(Intent(this@Connexion, MainActivity::class.java))
+            finish()
         }
     }
 }
