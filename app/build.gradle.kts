@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.tch057_03_tp2"
+    namespace = "com.gratton_gibilaro.projetsession"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.tch057_03_tp2"
+        applicationId = "com.gratton_gibilaro.projetsession"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -34,7 +34,7 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    buildFeatures {
+      buildFeatures {
         compose = true
     }
 }

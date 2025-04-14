@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "TCH057-03-TP2"
+rootProject.name = "ProjetSession"
 include(":app")
  

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TCH057-03-TP2</string>
+    <string name="app_name">ProjetSession</string>
     <string name="title_activity_connexion">Connexion</string>
     <string name="title_activity_inscription">Inscription</string>
     <string name="title_activity_accueil">Accueil</string>
