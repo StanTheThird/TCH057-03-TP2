@@ -6,22 +6,29 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-//import com.example.myapplication_sqllite.sqlite.DbUtil
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.example.tch057_03_tp2.R
+import com.example.tch057_03_tp2.modele.EntiteVoyage
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import java.io.IOException
 import java.util.*
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var voyageRepository: VoyageRepository
+    private val client = OkHttpClient()
+    private val URL = "http://192.168.2.128:3000/voyages" // Use 10.0.2.2 for Android emulator
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: GenericAdapter
-    private lateinit var voyages: List<VoyageRepository.Voyage>
-    private var filteredVoyages: List<VoyageRepository.Voyage> = listOf()
+    private var voyages: List<EntiteVoyage> = listOf()
+    private var filteredVoyages: List<EntiteVoyage> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,20 +52,12 @@ class MainActivity : AppCompatActivity() {
             val nomUtilisateurText = findViewById<TextView>(R.id.nom_utilisateur_text)
             nomUtilisateurText.text = nomUtilisateur
 
-            voyageRepository = VoyageRepository()
-            voyages = voyageRepository.fetchVoyages()
-            filteredVoyages = voyages
-
             // Set up RecyclerView
             recyclerView = findViewById(R.id.listVoyage)
             recyclerView.layoutManager = LinearLayoutManager(this)
-            adapter = GenericAdapter(
-                context = this,
-                layoutId = R.layout.item_voyage,
-                items = mapVoyagesToAdapterData(filteredVoyages),
-                onItemClick = { position -> navigateToVoyageDetails(filteredVoyages[position]) }
-            )
-            recyclerView.adapter = adapter
+
+            // Fetch voyages from the server
+            fetchVoyages()
 
             // Set up filter button
             val filterButton: LinearLayout = findViewById(R.id.filterButtonContainer)
@@ -83,8 +82,42 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
 
-}
+    private fun fetchVoyages() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val request = Request.Builder().url(URL).build()
+                val response = client.newCall(request).execute()
+
+                if (response.isSuccessful) {
+                    val json = response.body?.string()
+                    val voyageType = object : TypeToken<List<EntiteVoyage>>() {}.type
+                    voyages = Gson().fromJson(json, voyageType)
+                    filteredVoyages = voyages
+
+                    // Update UI on the main thread
+                    withContext(Dispatchers.Main) {
+                        adapter = GenericAdapter(
+                            context = this@MainActivity,
+                            layoutId = R.layout.item_voyage,
+                            items = mapVoyagesToAdapterData(filteredVoyages),
+                            onItemClick = { position -> navigateToVoyageDetails(filteredVoyages[position]) }
+                        )
+                        recyclerView.adapter = adapter
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@MainActivity, "Erreur lors du chargement des voyages.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: IOException) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@MainActivity, "Erreur de connexion au serveur.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
     private fun showFilterOverlay() {
         val filterDialog = BottomSheetDialog(this)
@@ -117,7 +150,7 @@ class MainActivity : AppCompatActivity() {
             monthEndField.adapter = adapter
         }
 
-        val destinations = listOf("All") + voyages.map { it.country }.distinct()
+        val destinations = listOf("All") + voyages.map { it.pays }.distinct()
         ArrayAdapter(this, android.R.layout.simple_spinner_item, destinations).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             destinationField.adapter = adapter
@@ -159,13 +192,13 @@ class MainActivity : AppCompatActivity() {
         endDateMillis: Long?
     ) {
         filteredVoyages = voyages.filter { voyage ->
-            val matchesDestination = destination == "All" || voyage.country.contains(destination, ignoreCase = true)
-            val priceValue = voyage.price;
+            val matchesDestination = destination == "All" || voyage.pays.contains(destination, ignoreCase = true)
+            val priceValue = voyage.prix
             val matchesPrice = (priceMin == null || priceValue >= priceMin) &&
                     (priceMax == null || priceValue <= priceMax)
             val matchesType = type == "All" || voyage.type.contains(type, ignoreCase = true)
 
-            val matchesDate = voyage.possibleDates.any { date ->
+            val matchesDate = voyage.getAvailableDates().any { date ->
                 val returnDateMillis = date + convertDurationToMilliseconds(voyage.duree)
                 (startDateMillis == null || date >= startDateMillis) &&
                         (endDateMillis == null || returnDateMillis <= endDateMillis)
@@ -190,21 +223,21 @@ class MainActivity : AppCompatActivity() {
         return days * 24 * 60 * 60 * 1000L // Convert days to milliseconds
     }
 
-    private fun navigateToVoyageDetails(voyage: VoyageRepository.Voyage) {
+    private fun navigateToVoyageDetails(voyage: EntiteVoyage) {
         val intent = Intent(this, Voyage::class.java).apply {
             putExtra("voyageId", voyage.id)
         }
         startActivity(intent)
     }
 
-    private fun mapVoyagesToAdapterData(voyages: List<VoyageRepository.Voyage>): List<Map<String, Any>> {
+    private fun mapVoyagesToAdapterData(voyages: List<EntiteVoyage>): List<Map<String, Any>> {
         return voyages.map { voyage ->
             mapOf(
-                "countryText" to voyage.country,
-                "placeText" to voyage.place,
+                "countryText" to voyage.pays,
+                "placeText" to voyage.destination,
                 "voyageImage" to voyage.imageUrl,
-                "possibleDates" to voyageRepository.convertLongListToDateStringList(voyage.possibleDates),
-                "prixText" to "%.0f$".format(voyage.price),
+                "possibleDates" to voyage.getDatesFormatted(),
+                "prixText" to "%.0f$".format(voyage.prix),
                 "description" to voyage.description
             )
         }

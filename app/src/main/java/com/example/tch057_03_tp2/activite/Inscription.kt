@@ -17,14 +17,13 @@ import kotlinx.coroutines.withContext
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONObject
 import java.io.IOException
 
 class Inscription : AppCompatActivity() {
 
     private val client = OkHttpClient()
     private val JSON = "application/json; charset=utf-8".toMediaType()
-    private val URL = "http://10.0.2.2:3000/" // Use 10.0.2.2 for Android emulator
+    private val URL = "http://192.168.2.128:3000/" // Use 10.0.2.2 for Android emulator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,26 +72,33 @@ class Inscription : AppCompatActivity() {
             // Check if email exists and create account
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    // Check if email exists
-                    val checkRequest = Request.Builder()
-                        .url("${URL}comptes?email=$email")
+                    // Fetch all existing users to determine the next ID
+                    val fetchRequest = Request.Builder()
+                        .url("${URL}comptes")
                         .build()
 
-                    val checkResponse = client.newCall(checkRequest).execute()
-                    if (checkResponse.isSuccessful) {
-                        val json = checkResponse.body?.string()
-                        val comptes = Gson().fromJson(json, Array<EntiteCompteUtilisateur>::class.java)
-
-                        if (comptes.isNotEmpty()) {
-                            withContext(Dispatchers.Main) {
-                                Toast.makeText(this@Inscription, "Cet email est déjà utilisé.", Toast.LENGTH_SHORT).show()
-                            }
-                            return@launch
-                        }
+                    val fetchResponse = client.newCall(fetchRequest).execute()
+                    val comptes = if (fetchResponse.isSuccessful) {
+                        val json = fetchResponse.body?.string()
+                        Gson().fromJson(json, Array<EntiteCompteUtilisateur>::class.java).toList()
+                    } else {
+                        emptyList()
                     }
+
+                    // Check if email already exists
+                    if (comptes.any { it.email == email }) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@Inscription, "Cet email est déjà utilisé.", Toast.LENGTH_SHORT).show()
+                        }
+                        return@launch
+                    }
+
+                    // Determine the next ID
+                    val nextId = (comptes.maxOfOrNull { it.id } ?: 0) + 1
 
                     // Create new account
                     val newCompte = EntiteCompteUtilisateur(
+                        id = nextId,
                         nom = nom,
                         prenom = prenom,
                         email = email,
@@ -105,14 +111,14 @@ class Inscription : AppCompatActivity() {
                     val json = Gson().toJson(newCompte)
                     val body = json.toRequestBody(JSON)
 
-                    val request = Request.Builder()
+                    val createRequest = Request.Builder()
                         .url("${URL}comptes")
                         .post(body)
                         .build()
 
-                    val response = client.newCall(request).execute()
+                    val createResponse = client.newCall(createRequest).execute()
 
-                    if (response.isSuccessful) {
+                    if (createResponse.isSuccessful) {
                         withContext(Dispatchers.Main) {
                             Toast.makeText(this@Inscription, "Compte créé avec succès !", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this@Inscription, Connexion::class.java))
