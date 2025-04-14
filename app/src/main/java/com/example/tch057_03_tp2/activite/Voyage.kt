@@ -68,8 +68,8 @@ class Voyage : AppCompatActivity() {
         for (date in voyageRepository.convertLongListToDateStringList(voyage.possibleDates)) {
             val dateButton = Button(this).apply {
                 text = date
-                setBackgroundResource(R.drawable.rounded_button_unselected)
-                setTextColor(resources.getColor(R.color.light_bluish_gray, null))
+                setBackgroundResource(R.drawable.white_rounded_frame_360)
+                setTextColor(resources.getColor(R.color.white_50, null))
                 setPadding(16, 8, 16, 8)
                 textSize = 14f
                 setOnClickListener {
@@ -80,17 +80,17 @@ class Voyage : AppCompatActivity() {
                     for (i in 0 until dateContainer.childCount) {
                         val child = dateContainer.getChildAt(i)
                         if (child is Button) {
-                            child.setBackgroundResource(R.drawable.rounded_button_unselected)
-                            child.setTextColor(resources.getColor(R.color.light_bluish_gray, null))
+                            child.setBackgroundResource(R.drawable.white_rounded_frame_360)
+                            child.setTextColor(resources.getColor(R.color.white_50, null))
                         }
                     }
-                    setBackgroundResource(R.drawable.rounded_button_selected)
+                    setBackgroundResource(R.drawable.blue_rounded_frame_360)
                     setTextColor(resources.getColor(R.color.white, null))
                 }
             }
             // Highlight the first date by default
             if (date == selectedDate) {
-                dateButton.setBackgroundResource(R.drawable.rounded_button_selected)
+                dateButton.setBackgroundResource(R.drawable.blue_rounded_frame_360)
                 dateButton.setTextColor(resources.getColor(R.color.white, null))
             }
             dateContainer.addView(dateButton)
