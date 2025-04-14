@@ -23,7 +23,7 @@ class Inscription : AppCompatActivity() {
 
     private val client = OkHttpClient()
     private val JSON = "application/json; charset=utf-8".toMediaType()
-    private val URL = "http://192.168.2.128:3000/" // Use 10.0.2.2 for Android emulator
+    private val URL = "http://10.0.2.2:3000/" // Use 10.0.2.2 for Android emulator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

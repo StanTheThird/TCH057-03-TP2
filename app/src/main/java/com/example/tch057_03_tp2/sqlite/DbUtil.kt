@@ -40,24 +40,63 @@ class DbUtil(context: Context) : SQLiteOpenHelper(
 
     fun getAllReservations(): List<Reservation> {
         val db = readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM ${ReservationContract.TABLE_NAME}", null)
+        val cursor = db.query(
+            ReservationContract.TABLE_NAME,
+            null, // toutes les colonnes
+            null, // pas de WHERE
+            null, // pas d'args WHERE
+            null, // pas de GROUP BY
+            null, // pas de HAVING
+            null  // pas de ORDER BY
+        )
+
         val reservations = mutableListOf<Reservation>()
 
-        if (cursor.moveToFirst()) {
-            do {
-                val id = cursor.getInt(cursor.getColumnIndexOrThrow(ReservationContract.Colonnes.ID))
-                val destination = cursor.getString(cursor.getColumnIndexOrThrow(ReservationContract.Colonnes.DESTINATION))
-                val travelDate = cursor.getString(cursor.getColumnIndexOrThrow(ReservationContract.Colonnes.TRAVEL_DATE))
-                val bookingDate = cursor.getString(cursor.getColumnIndexOrThrow(ReservationContract.Colonnes.BOOKING_DATE))
-                val price = cursor.getDouble(cursor.getColumnIndexOrThrow(ReservationContract.Colonnes.PRICE))
-                val status = cursor.getString(cursor.getColumnIndexOrThrow(ReservationContract.Colonnes.STATUS))
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    val id = cursor.getInt(cursor.getColumnIndexOrThrow(ReservationContract.Colonnes.ID))
+                    val voyageId = cursor.getInt(cursor.getColumnIndexOrThrow(ReservationContract.Colonnes.VOYAGE_ID))
+                    val destination = cursor.getString(cursor.getColumnIndexOrThrow(ReservationContract.Colonnes.DESTINATION))
+                    val travelDate = cursor.getString(cursor.getColumnIndexOrThrow(ReservationContract.Colonnes.TRAVEL_DATE))
+                    val bookingDate = cursor.getString(cursor.getColumnIndexOrThrow(ReservationContract.Colonnes.BOOKING_DATE))
+                    val price = cursor.getDouble(cursor.getColumnIndexOrThrow(ReservationContract.Colonnes.PRICE))
+                    val passengerCount = cursor.getInt(cursor.getColumnIndexOrThrow(ReservationContract.Colonnes.PASSENGER_COUNT))
+                    val status = cursor.getString(cursor.getColumnIndexOrThrow(ReservationContract.Colonnes.STATUS))
 
-                reservations.add(Reservation(id, destination, travelDate, bookingDate, price, status))
-            } while (cursor.moveToNext())
+                    reservations.add(Reservation(id, destination, travelDate, bookingDate, price, status))
+                } while (cursor.moveToNext())
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            cursor.close()
+            db.close()
+        }
+        return reservations
+    }
+    fun insertReservation(
+        voyageId: Int,
+        destination: String,
+        travelDate: String,
+        price: Double,
+        passengerCount: Int,
+        status: String = "Confirmée"
+    ): Boolean {
+        val db = writableDatabase
+
+        val values = ContentValues().apply {
+            put(ReservationContract.Colonnes.VOYAGE_ID, voyageId)
+            put(ReservationContract.Colonnes.DESTINATION, destination)
+            put(ReservationContract.Colonnes.TRAVEL_DATE, travelDate)
+            put(ReservationContract.Colonnes.PRICE, price)
+            put(ReservationContract.Colonnes.PASSENGER_COUNT, passengerCount)
+            put(ReservationContract.Colonnes.STATUS, status)
+            // BOOKING_DATE est géré automatiquement avec DEFAULT(date('now'))
         }
 
-        cursor.close()
-        return reservations
+        val newRowId = db.insert(ReservationContract.TABLE_NAME, null, values)
+        return newRowId != -1L
     }
 
     fun checkDatabase(): Boolean {
@@ -96,6 +135,17 @@ class DbUtil(context: Context) : SQLiteOpenHelper(
         cursor.close()
         db.close()
         return count
+    }
+    fun clearAllReservations(): Boolean {
+        val db = writableDatabase
+        return try {
+            db.delete(ReservationContract.TABLE_NAME, null, null) > 0
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        } finally {
+            db.close()
+        }
     }
 
 }
