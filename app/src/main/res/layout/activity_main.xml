@@ -76,10 +76,11 @@
             android:layout_weight="1"
             android:background="@drawable/white_rounded_frame_360"
             android:clickable="true"
+            android:layout_marginLeft="@dimen/normal_padding"
             android:foreground="?attr/selectableItemBackground"
             android:gravity="center"
+            android:minHeight="48dp"
             android:orientation="horizontal"
-            android:paddingStart="@dimen/large_padding"
             android:paddingTop="@dimen/normal_padding"
             android:paddingBottom="@dimen/normal_padding">
 
@@ -92,33 +93,21 @@
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/nb_reservation_text"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="@dimen/normal_padding"
-                android:layout_marginEnd="@dimen/normal_padding"
-                android:background="@drawable/blue_rounded_frame_360"
-                android:fontFamily="@font/adlamdisplay_regular"
-                android:text="2"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/deconnexion_btn"
-        android:layout_width="43dp"
-        android:layout_height="43dp"
-        android:layout_margin="@dimen/normal_padding"
-        android:background="@drawable/white_rounded_frame_360"
-        android:gravity="center"
-        android:padding="@dimen/normal_padding"
-        android:text="X"
-        android:textAlignment="center"
-        android:fontFamily="@font/adlamdisplay_regular"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
+            android:id="@+id/deconnexion_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="@dimen/normal_padding"
+            android:background="@drawable/white_rounded_frame_360"
+            android:fontFamily="@font/adlamdisplay_regular"
+            android:gravity="center"
+            android:padding="@dimen/normal_padding"
+            android:text="X"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 </LinearLayout>
 
     <!-- Filter Button -->

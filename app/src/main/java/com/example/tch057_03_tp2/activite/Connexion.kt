@@ -20,7 +20,7 @@ import java.io.IOException
 class Connexion : AppCompatActivity() {
 
     private val client = OkHttpClient()
-    private val URL = "http://192.168.2.128:3000/"
+    private val URL = "http://10.0.2.2:3000/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

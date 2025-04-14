@@ -24,7 +24,7 @@ import java.io.IOException
 class Voyage : AppCompatActivity() {
 
     private val client = OkHttpClient()
-    private val URL = "http://192.168.2.128:3000/voyages" // Use the same route as MainActivity
+    private val URL = "http://10.0.2.2:3000//voyages" // Use the same route as MainActivity
     private lateinit var dbHelper: DbUtil // Declare dbHelper at the class level
 
     private lateinit var selectedDate: String
